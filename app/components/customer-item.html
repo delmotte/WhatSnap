@@ -1,0 +1,58 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<dom-module id="customer-item">
+    <style>
+    </style>
+
+    <template>
+        hey
+        <span>{{ customer.id }}</span>
+        <span>{{ customer.name }}</span>
+        <br/>
+    </template>
+
+</dom-module>
+
+<script>
+    Polymer({
+
+        is: 'customer-item',
+
+        properties: {
+            customer: {
+                type: Object,
+                value: function() {
+                    return {
+                        name:  'Nobody',
+                        id: -1
+                    };
+                }
+            }
+        },
+
+        ready: function () {
+            console.log('customer-item is ready !');
+        },
+
+        attached: function () {
+            // add this element to the communication bus
+            var self = this;
+            this.id = Bus.register({
+                receive: function (eventname, data) {
+                    if (eventname === 'incr') {
+                        self.set('customer.id', self.customer.id + data);
+                    } else if (eventname === 'hello') {
+                        console.log('Hello Response');
+                    }
+
+                }
+            });
+        },
+
+        detached: function () {
+            // remove this element from the communication bus
+            Bus.destroy({id:this.id});
+        }
+
+    });
+</script>

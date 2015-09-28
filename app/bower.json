@@ -1,0 +1,19 @@
+{
+  "name": "Polymer",
+  "version": "0.0.0",
+  "authors": [
+    "Jean-Yves DELMOTTE <delmotte.jy@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.0.0",
+    "app-router": "~2.6.1"
+  }
+}

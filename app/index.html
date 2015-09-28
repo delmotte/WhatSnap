@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <title>Polymer Test</title>
+    <script src="./bower_components/webcomponentsjs/webcomponents.min.js"></script>
+    <link rel="import" href="./bower_components/app-router/app-router.html"/>
+</head>
+<body>
+<script>
+    var Bus = {
+        id: 0,
+        registeredComponents: new Array(),
+        register: function (component) {
+            component.id = this.id;
+            this.id++;
+            this.registeredComponents.push(component);
+            return component.id;
+        },
+        destroy: function (component) {
+            for (var i in this.registeredComponents) {
+                if (this.registeredComponents[i].id == component.id) {
+                    this.registeredComponents.splice(i, 1);
+                    break;
+                }
+            }
+        },
+        emit: function (eventname, data) {
+            for (var i in this.registeredComponents) {
+                this.registeredComponents[i].receive(eventname, data);
+            }
+        }
+    };
+    var Model = {
+        customers: [{id:0, name:"Aaa"},{id:1, name:"Bbb"},{id:2, name:"Ccc"}],
+        getCustomerById: function (id) {
+            for (var i in this.customers) {
+                if (this.customers[i].id == id) {
+                    return this.customers[i];
+                }
+            }
+            return null;
+        }
+    };
+</script>
+
+    <app-router>
+        <app-route path="/" import="./components/hello-world.html"></app-route>
+        <app-route path="/home" redirect="/"></app-route>
+        <app-route path="*" import="./components/not-found.html"></app-route>
+    </app-router>
+
+</body>
+</html>
