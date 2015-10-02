@@ -8,3 +8,7 @@ http://www.google.fr/imgres?imgurl=http%3A%2F%2Fpocketnow.com%2Fwp-content%2Fupl
 
 # upload node js socket io
 http://code.tutsplus.com/tutorials/how-to-create-a-resumable-video-uploade-in-node-js--net-25445
+
+
+# sim
+http://plugins.cordova.io/#/package/com.pbakondy.sim
