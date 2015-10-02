@@ -1,17 +1,21 @@
 var callback = require('../callbacks');
+var fs = require('fs');
 
 module.exports = function (router) {
 
-    // general Callbacks
-    router.get('/', function (req, res) {
-        return res.json({ok:'laule'});
+    router.get('/file/:url', function (req, res) {
+        try {
+            var img = fs.readFileSync('./Temp/' + req.params.url);
+            res.writeHead(200);
+            res.end(img, 'binary');
+        } catch (err) {
+            res.sendStatus(404);
+        }
+
     });
 
-    // TODO : getImg (url)
-    // TODO : login (phone number, contacts) -> return all conversations
-    // TODO : signin (phone number, contacts)
-
-    router.post('/login', callback.signin);
+    router.post('/signin', callback.signin);
+    router.post('/login', callback.login);
 
 	return router;
 
