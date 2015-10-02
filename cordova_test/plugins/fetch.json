@@ -7,19 +7,19 @@
         "is_top_level": true,
         "variables": {}
     },
-    "cordova-plugin-sim": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-sim"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
     "com.dbaq.cordova.contactsPhoneNumbers": {
         "source": {
             "type": "git",
             "url": "https://github.com/dbaq/cordova-plugin-contacts-phone-numbers.git",
             "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "com.pbakondy.sim": {
+        "source": {
+            "type": "registry",
+            "id": "com.pbakondy.sim"
         },
         "is_top_level": true,
         "variables": {}

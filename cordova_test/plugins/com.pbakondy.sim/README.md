@@ -1,15 +1,14 @@
 # cordova-plugin-sim
 
-[![Code Climate](https://codeclimate.com/github/pbakondy/cordova-plugin-sim/badges/gpa.svg)](https://codeclimate.com/github/pbakondy/cordova-plugin-sim)
-
 This is a cordova plugin to get data from the SIM card like the carrier name, mcc, mnc and country code and other system dependent additional info.
 
 
 ## Installation
 
 ```
-cordova plugin add cordova-plugin-sim
+cordova plugin add com.pbakondy.sim
 ```
+
 
 ## Supported Platforms
 
@@ -116,7 +115,7 @@ Notice: the content of phoneNumber is unreliable (see [this](http://stackoverflo
 |    1 | `SIM_STATE_ABSENT`            | No SIM card is available in the device
 |    2 | `SIM_STATE_PIN_REQUIRED`      | Locked: requires the user's SIM PIN to unlock
 |    3 | `SIM_STATE_PUK_REQUIRED`      | Locked: requires the user's SIM PUK to unlock
-|    4 | `SIM_STATE_NETWORK_LOCKED`    | Locked: requires a network PIN to unlock
+|    4 | `SIM_STATE_NETWORK_LOCKED`    | Locked: requries a network PIN to unlock
 |    5 | `SIM_STATE_READY`             | Ready
 
 
