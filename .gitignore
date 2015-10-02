@@ -5,3 +5,4 @@
 /back-end/node_modules/
 /back-end/Temp/*
 /cordova_test/platforms
+/cordova_test/plugins

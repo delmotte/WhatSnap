@@ -87,19 +87,21 @@ describe('User Callback Test', function () {
             db.collection('users').deleteMany({
                 $or: [
                     { userId: user.phone_number},
-                    { userId: user2.phone_number}
+                    { userId: user2.phone_number},
+                    { userId: user3.phone_number}
                 ]
             }, function (err, result) {
                 if (err) throw err;
-                if (result.result.n !== 2) {
+                if (result.result.n !== 3) {
                     console.log('Error deleting user', result.result.n);
                 }
                 db.collection('conversations').deleteMany({
                     $or: [
                         {usersId: user.phone_number},
-                        {usersId: user2.phone_number}
+                        {usersId: user2.phone_number},
+                        {usersId: user3.phone_number}
                     ]
-                }, function (err, result) {
+                }, function (err) {
                     if (err) throw err;
                     done();
                 });
