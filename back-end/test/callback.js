@@ -82,6 +82,38 @@ describe('User Callback Test', function () {
         }});
     });
 
+    it ('should update conversations', function (done) {
+        database.request(function (db) {
+            var conversations = db.collection('conversations');
+            conversations.updateOne({
+                $and: [
+                    { usersId: user.phone_number },
+                    { usersId: user2.phone_number }
+                ]
+            }, {
+                $push: {
+                    messages: {
+                        sendBy: user.phone_number,
+                        image_url: 'coucou.png',
+                        sendAt: new Date()
+                    }
+                }
+            }, function (err) {
+                if (err) throw err;
+                conversations.findOne({
+                    $and: [
+                        { usersId: user.phone_number },
+                        { usersId: user2.phone_number }
+                    ]
+                }, function (err, result) {
+                    if (err) throw err;
+                    assert.equal(1, result.messages.length);
+                    done();
+                });
+            });
+        });
+    });
+
     after(function (done) {
         database.request(function (db) {
             db.collection('users').deleteMany({

@@ -2,11 +2,8 @@ var sockets = new Array();
 var fs = require('fs');
 var exec = require('child_process').exec;
 var util = require('util');
-var uniqid = require('uniqid');
 var siofu = require("socketio-file-upload");
-
-// TODO : send photo
-// TODO : receive photo
+var database = require('../database');
 
 var Files = {};
 
@@ -33,6 +30,7 @@ module.exports = {
 
         /** login / disconnect **/
         var phone_number = '';
+        var last_destination_user = '';
 
         socket.on('phone_number', function (phone) {
             sockets[phone] = socket;
@@ -43,16 +41,50 @@ module.exports = {
             delete sockets[phone_number];
         });
 
+        socket.on('user_destination', function (phone) {
+            last_destination_user = phone;
+        });
+
         /** UPLOAD **/
         var uploader = new siofu();
         uploader.dir = "Temp/";
         uploader.listen(socket);
         uploader.on("complete", function (event) {
-            console.log(event.file.pathName);
-            // TODO : write the new message in the database
 
-            // TODO : send notification to connected user
+            var date = new Date();
+
+            if (phone_number && last_destination_user) {
+                database.request(function (db) {
+                    var conversations = db.collection('conversations');
+                    conversations.updateOne({
+                        $and: [
+                            { usersId: phone_number },
+                            { usersId: last_destination_user }
+                        ]
+                    }, {
+                        $push: {
+                            messages: {
+                                sendBy: phone_number,
+                                image_url: event.file.pathName,
+                                sendAt: date
+                            }
+                        }
+                    });
+                });
+            }
+
+            var destination_socket = sockets[last_destination_user];
+            if (destination_socket) {
+                destination_socket.emit('new_message', {
+                    sendBy: phone_number,
+                    image_url: event.file.pathName,
+                    sendAt: date
+                });
+            }
+
         });
+
+
 
     }
 };
