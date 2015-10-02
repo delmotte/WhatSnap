@@ -15,6 +15,10 @@
                         {
                             "xml": "<feature name=\"Sim\"><param name=\"android-package\" value=\"com.pbakondy.Sim\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"ContactsPhoneNumbers\"><param name=\"android-package\" value=\"com.dbaq.cordova.contactsPhoneNumbers.ContactsManager\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -24,6 +28,10 @@
                     "/*": [
                         {
                             "xml": "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.READ_CONTACTS\" />",
                             "count": 1
                         }
                     ]
@@ -36,6 +44,9 @@
             "PACKAGE_NAME": "io.cordova.hellocordova"
         },
         "cordova-plugin-sim": {
+            "PACKAGE_NAME": "io.cordova.hellocordova"
+        },
+        "com.dbaq.cordova.contactsPhoneNumbers": {
             "PACKAGE_NAME": "io.cordova.hellocordova"
         }
     },
