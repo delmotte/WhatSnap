@@ -16,6 +16,26 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+function getContacts(){
+    navigator.contactsPhoneNumbers.list(function(contacts) {
+        console.log(contacts.length + ' contacts found');
+        for(var i = 0; i < contacts.length; i++) {
+            console.log(contacts[i].id + " - " + contacts[i].displayName);
+            for(var j = 0; j < contacts[i].phoneNumbers.length; j++) {
+                var phone = contacts[i].phoneNumbers[j];
+                console.log("===> " + phone.type + "  " + phone.number + " (" + phone.normalizedNumber+ ")");
+            }
+        }
+    }, function(error) {
+        console.error(error);
+    });
+}
+function getSimInfo(e){
+    console.log("sim info",e);
+}
+function simErrorCallback(){
+    console.log("sim info error");
+}
 var app = {
     // Application Constructor
     initialize: function() {
@@ -34,6 +54,8 @@ var app = {
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
+        getContacts();
+        window.plugins.sim.getSimInfo(getSimInfo, simErrorCallback);
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
