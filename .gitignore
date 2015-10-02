@@ -3,3 +3,4 @@
 .DS_STORE
 /node_modules/
 /back-end/node_modules/
+/back-end/Temp/*

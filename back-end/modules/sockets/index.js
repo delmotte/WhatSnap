@@ -1,8 +1,14 @@
-var uniqid = require('uniqid');
 var sockets = new Array();
+var fs = require('fs');
+var exec = require('child_process').exec;
+var util = require('util');
+var uniqid = require('uniqid');
+var siofu = require("socketio-file-upload");
 
 // TODO : send photo
 // TODO : receive photo
+
+var Files = {};
 
 module.exports = {
 
@@ -25,19 +31,27 @@ module.exports = {
      */
     socketCallback: function (socket) {
 
-        // on alloue à chaque utilisateur un id
-        var id = uniqid();
-        console.log('+1 user');
+        /** login / disconnect **/
+        var phone_number = '';
 
-        // on stock sa socket dans un tableau pour l'utiliser dans d'autres module
-        sockets[id] = socket;
-
-        // mise en place de l'authentification de chaque utilisateur
-        socket.emit('your-id', id);
+        socket.on('phone_number', function (phone) {
+            sockets[phone] = socket;
+            phone_number = phone;
+        });
 
         socket.on('disconnect', function () {
-            delete sockets[id];
-            console.log('-1 user');
+            delete sockets[phone_number];
+        });
+
+        /** UPLOAD **/
+        var uploader = new siofu();
+        uploader.dir = "Temp/";
+        uploader.listen(socket);
+        uploader.on("complete", function (event) {
+            console.log(event.file.pathName);
+            // TODO : write the new message in the database
+
+            // TODO : send notification to connected user
         });
 
     }

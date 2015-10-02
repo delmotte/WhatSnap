@@ -1,6 +1,7 @@
 // some viariable to initialize the server
 var express = require('express');
 var app = express();
+var siofu = require("socketio-file-upload");
 
 
 // create the router with the bdd uniq instance
@@ -22,6 +23,7 @@ app.use(function (req, res, next) {
 
 // apply router to our app
 app.use('/',router);
+app.use(siofu.router);
 
 console.log("Server Launched on port 7070...");
 
