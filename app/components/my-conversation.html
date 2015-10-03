@@ -1,0 +1,192 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html"/>
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html"/>
+<link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html"/>
+<link rel="import" href="../bower_components/paper-fab/paper-fab.html"/>
+
+<dom-module id="my-conversation">
+    <style>
+        .container {
+            margin-top:20px;
+            padding-left:20px;
+            padding-right:20px;
+            text-align:right;
+        }
+
+        .bubble-left {
+            position:relative;
+            top:6px;
+            margin-left:75px;
+            width: calc(100% - 100px);
+            padding: 10px;
+            background: #DDDDDD;
+            -webkit-border-radius: 10px;
+            -moz-border-radius: 10px;
+            border-radius: 10px;
+        }
+
+        .bubble-right {
+            position:relative;
+            top:6px;
+            margin:auto;
+            right:0px;
+            margin-right:75px;
+            width: calc(100% - 100px);
+            padding: 10px;
+            background: #DDDDDD;
+            -webkit-border-radius: 10px;
+            -moz-border-radius: 10px;
+            border-radius: 10px;
+        }
+
+        .bubble-left img, .bubble-right img {
+            width:100%;
+            height:auto;
+            display:block;
+            margin-bottom:10px;
+        }
+
+        .bubble-left:after {
+            content: '';
+            position: absolute;
+            border-style: solid;
+            border-width: 7px 21px 7px 0;
+            border-color: transparent #DDDDDD;
+            display: block;
+            width: 0;
+            z-index: 1;
+            left: -21px;
+            top: 14px;
+        }
+
+        .bubble-right:after {
+            content: '';
+            position: absolute;
+            border-style: solid;
+            border-width: 7px 0px 7px 21px;
+            border-color: transparent #DDDDDD;
+            display: block;
+            width: 0;
+            z-index: 1;
+            right: -21px;
+            top: 14px;
+        }
+
+        .messages-container {
+            padding-bottom:100px;
+            padding-top:64px;
+        }
+
+        @media (max-width: 639px) {
+            .messages-container {
+                padding-top:56px;
+            }
+        }
+
+        paper-toolbar {
+            z-index:100;
+            position:fixed;
+            top:0px;
+            width:100%;
+        }
+
+        .add-photo {
+            position:fixed;
+            bottom:0px;
+            display:block;
+            width:100%;
+            text-align:center;
+        }
+
+        .add-photo paper-fab {
+            top:-12px;
+        }
+
+    </style>
+
+    <template>
+
+        <paper-toolbar>
+            <paper-icon-button icon="arrow-back" on-click="goBack"></paper-icon-button>
+            <div class="title">Contact Name</div>
+        </paper-toolbar>
+
+        <div class="messages-container" id="messages">
+            <div class="container">
+                <div class="contact-img">
+                    <img src="http://www.iconsfind.com/wp-content/uploads/2015/08/20150831_55e46aeb19862-210x210.png"
+                         alt=""
+                         style="height:54px;position:relative;float:left;"/>
+                </div>
+
+                <div class="bubble-left">
+                    <img src="http://images-et-photos.com/wp-content/uploads/sites/3/2015/03/photo-06.jpg" alt=""/>
+                    10:07 AM, London
+                </div>
+            </div>
+            <div class="container">
+                <div class="contact-img">
+                    <img src="http://www.iconsfind.com/wp-content/uploads/2015/08/20150831_55e46aeb19862-210x210.png"
+                         alt=""
+                         style="height:54px;position:relative;float:right;"/>
+                </div>
+
+                <div class="bubble-right">
+                    <img src="http://images-et-photos.com/wp-content/uploads/sites/3/2015/03/photo-06.jpg" alt=""/>
+                    10:07 AM, London
+                </div>
+            </div>
+            <div class="container">
+                <div class="contact-img">
+                    <img src="http://www.iconsfind.com/wp-content/uploads/2015/08/20150831_55e46aeb19862-210x210.png"
+                         alt=""
+                         style="height:54px;position:relative;float:left;"/>
+                </div>
+
+                <div class="bubble-left">
+                    <img src="http://images-et-photos.com/wp-content/uploads/sites/3/2015/03/photo-06.jpg" alt=""/>
+                    10:07 AM, London
+                </div>
+            </div>
+        </div>
+
+        <div class="add-photo">
+            <paper-fab icon="camera-enhance"></paper-fab>
+        </div>
+
+    </template>
+
+</dom-module>
+
+<script>
+    Polymer({
+        is: 'my-conversation',
+
+        // initialize data
+        properties: {
+            conversations: {
+                type: Array,
+                value: function () {
+                    return [{name:'Allan'},{ name:'Bonjour'}];
+                }
+            },
+            isEmpty: {
+                type: Boolean,
+                value: true
+            }
+        },
+
+        goBack: function () {
+            document.querySelector('app-router').go('/home');
+        },
+
+        attached: function () {
+            this.async(function() {
+                // code that formerly resided in `domReady`
+                document.querySelector('body').scrollTop = document.querySelector('body').scrollHeight;
+            });
+
+        }
+
+    });
+</script>

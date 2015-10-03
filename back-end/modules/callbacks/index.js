@@ -1,5 +1,7 @@
 var database = require('../database');
 
+// TODO : new contacts in the login
+
 module.exports = {
 
     /**

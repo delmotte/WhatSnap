@@ -1,5 +1,4 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../components/customer-item.html"/>
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html"/>
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html"/>
 <link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html"/>
@@ -21,7 +20,7 @@
 
         <template is="dom-repeat" items="{{ conversations }}">
 
-            <paper-item>
+            <paper-item on-click="goConversation">
                 <div class="avatar green" item-icon>
                     <img src="http://www.iconsfind.com/wp-content/uploads/2015/08/20150831_55e46aeb19862-210x210.png"
                          alt=""
@@ -61,7 +60,7 @@
             conversations: {
                 type: Array,
                 value: function () {
-                    return [];
+                    return [{_id: 'a', name:'Allan'},{ _id: 'b', name:'Bonjour'}];
                 }
             },
             isEmpty: {
@@ -103,6 +102,10 @@
                 UserStore.matchConversationWithName(request.detail.response.data.conversations);
                 this.set('conversations', UserStore.getConversations());
             }
+        },
+
+        goConversation: function (item) {
+            document.querySelector('app-router').go('/conversation/' + item.model.item._id);
         }
 
     });
