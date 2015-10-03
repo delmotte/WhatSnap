@@ -6,12 +6,12 @@ describe('User Callback Test', function () {
 
     var user = {
         phone_number: '0808080808',
-        contacts: []
+        contacts: ['0909090909']
     };
 
     var user2 = {
         phone_number: '0909090909',
-        contacts: [user.phone_number]
+        contacts: [user.phone_number, '1010101010']
     };
 
     var user3 = {
@@ -61,7 +61,7 @@ describe('User Callback Test', function () {
         }, {json: function (response) {
             assert.equal('success', response.status);
             assert.equal(user3.phone_number, response.data.user.userId);
-            assert.equal(2, response.data.conversations.length);
+            assert.equal(1, response.data.conversations.length);
             done();
         }});
     });
@@ -69,7 +69,7 @@ describe('User Callback Test', function () {
     it ('should log in the new user (again)', function (done) {
         callback.login({body:user}, {json: function (response) {
             assert.equal('success', response.status);
-            assert.equal(2, response.data.conversations.length);
+            assert.equal(1, response.data.conversations.length);
             done();
         }});
     });
@@ -78,6 +78,14 @@ describe('User Callback Test', function () {
         callback.login({body: user2}, {json: function (response) {
             assert.equal('success', response.status);
             assert.equal(2, response.data.conversations.length);
+            done();
+        }});
+    });
+
+    it ('should log in the new user 3', function (done) {
+        callback.login({body: user3}, {json: function (response) {
+            assert.equal('success', response.status);
+            assert.equal(1, response.data.conversations.length);
             done();
         }});
     });

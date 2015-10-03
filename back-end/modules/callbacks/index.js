@@ -18,9 +18,13 @@ module.exports = {
 
             // finding contacts in the application
             users.find({
-                userId: {
-                    $in: req.body.contacts
-                }
+                $and: [{
+                    userId: {
+                        $in: req.body.contacts
+                    }
+                }, {
+                    contacts: req.body.phone_number
+                }]
             }).toArray(function (err, result) {
                 if (err) {
                     db.close();
@@ -36,7 +40,8 @@ module.exports = {
 
                 users.insertOne({
                     userId: req.body.phone_number,
-                    geolocation: []
+                    geolocation: [],
+                    contacts: req.body.contacts
                 }, function (err) {
                     if (err) return res.json({status: 'error', message: 'internal error'});
 
