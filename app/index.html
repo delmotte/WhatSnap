@@ -15,7 +15,7 @@
         <app-route path="/" import="./components/my-home.html"></app-route>
         <app-route path="/home" redirect="/"></app-route>
         <app-route path="/conversation/:conversationId" import="./components/my-conversation.html"></app-route>
-        <app-route path="*" import="./components/not-found.html"></app-route>
+        <app-route path="*" redirect="/"></app-route>
     </app-router>
 
 </body>

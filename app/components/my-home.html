@@ -59,13 +59,11 @@
         properties: {
             conversations: {
                 type: Array,
-                value: function () {
-                    return [{_id: 'a', name:'Allan'},{ _id: 'b', name:'Bonjour'}];
-                }
+                value: UserStore.getConversations()
             },
             isEmpty: {
                 type: Boolean,
-                value: true
+                value: UserStore.getConversations().length == 0
             }
         },
 

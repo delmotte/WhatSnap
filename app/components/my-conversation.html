@@ -132,7 +132,7 @@
                 </div>
 
                 <div class="bubble-right">
-                    <img src="http://images-et-photos.com/wp-content/uploads/sites/3/2015/03/photo-06.jpg" alt=""/>
+                    <img src="https://photographylife.com/wp-content/uploads/2014/06/Nikon-D810-Image-Sample-6.jpg" alt=""/>
                     10:07 AM, London
                 </div>
             </div>
@@ -144,7 +144,7 @@
                 </div>
 
                 <div class="bubble-left">
-                    <img src="http://images-et-photos.com/wp-content/uploads/sites/3/2015/03/photo-06.jpg" alt=""/>
+                    <img src="https://www.wonderplugin.com/wp-content/plugins/wonderplugin-lightbox/images/demo-image0.jpg" alt=""/>
                     10:07 AM, London
                 </div>
             </div>
@@ -162,7 +162,6 @@
     Polymer({
         is: 'my-conversation',
 
-        // initialize data
         properties: {
             conversations: {
                 type: Array,
@@ -173,6 +172,10 @@
             isEmpty: {
                 type: Boolean,
                 value: true
+            },
+            loading: {
+                type:Boolean,
+                value: true
             }
         },
 
@@ -180,10 +183,21 @@
             document.querySelector('app-router').go('/home');
         },
 
-        attached: function () {
+        ready: function () {
+            var self = this;
             this.async(function() {
-                // code that formerly resided in `domReady`
-                document.querySelector('body').scrollTop = document.querySelector('body').scrollHeight;
+                var imgs = document.querySelectorAll('.bubble-right img, .bubble-left img');
+                var index = 0;
+                for (var i = 0; i < imgs.length; i++) {
+                    imgs[i].addEventListener('load', function () {
+                        index++;
+                        if (index == imgs.length) {
+                            self.set('loading', false);
+                            document.querySelector('body').scrollTop = document.querySelector('body').scrollHeight;
+                        }
+                    });
+                }
+
             });
 
         }

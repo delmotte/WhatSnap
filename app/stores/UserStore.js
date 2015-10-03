@@ -1,27 +1,36 @@
 var UserStore = (function () {
 
-    var _sim = {}, _contacts = {}, _conversations;
+    var _sim = {},
+        _contacts = [],
+        _conversations = [],
+        initialized = false;
 
     function init() {
-        /*window.plugins.sim.getSimInfo(function (sim) {
-            _sim = sim;
-            navigator.contactsPhoneNumbers.list(function(contacts) {
-                _contacts = contacts.map(function (contact) {
-                    return {
-                        phoneNumber: contact.phoneNumbers.length > 0 ? contact.phoneNumbers[0].normalizedNumber : null,
-                        name: contact.displayName
-                    };
-                });
-                Dispatcher.emit('INITIALISATION_DONE');
-            }, function() {
-                Dispatcher.emit('NO_CONTACT_LIST', {});
-            });
-        }, function () {
-            Dispatcher.emit('NO_SIM_DETECTED', {});
-        });*/
-        _sim = {phoneNumber: "+33786625527"}
-        _contacts = [];
-        Dispatcher.emit('INITIALISATION_DONE');
+        if (!initialized) {
+
+            // TODO : socket connection
+
+            initialized = true;
+            /*window.plugins.sim.getSimInfo(function (sim) {
+             _sim = sim;
+             navigator.contactsPhoneNumbers.list(function(contacts) {
+             _contacts = contacts.map(function (contact) {
+             return {
+             phoneNumber: contact.phoneNumbers.length > 0 ? contact.phoneNumbers[0].normalizedNumber : null,
+             name: contact.displayName
+             };
+             });
+             Dispatcher.emit('INITIALISATION_DONE');
+             }, function() {
+             Dispatcher.emit('NO_CONTACT_LIST', {});
+             });
+             }, function () {
+             Dispatcher.emit('NO_SIM_DETECTED', {});
+             });*/
+            _sim = {phoneNumber: "+33786625527"};
+            _contacts = [];
+            Dispatcher.emit('INITIALISATION_DONE');
+        }
     }
 
     function matchConversationWithName(conversations) {
