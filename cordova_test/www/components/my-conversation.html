@@ -4,7 +4,7 @@
 <link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html"/>
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html"/>
 
-<dom-module id="my-conversation" attributes="conversationId">
+<dom-module id="my-conversation">
     <style>
         .container {
             margin-top:20px;
@@ -108,7 +108,7 @@
 
         <paper-toolbar>
             <paper-icon-button icon="arrow-back" on-click="goBack"></paper-icon-button>
-            <div class="title">{{ userName }}</div>
+            <div class="title">Contact Name</div>
         </paper-toolbar>
 
         <div class="messages-container" id="messages">
@@ -176,10 +176,6 @@
             loading: {
                 type:Boolean,
                 value: true
-            },
-            userName: {
-                type:String,
-                value: 'noone'
             }
         },
 
@@ -203,11 +199,6 @@
                 }
 
             });
-
-        },
-
-        attached: function () {
-            this.set('userName', UserStore.enterConversation(this.conversationId));
 
         }
 

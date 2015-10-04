@@ -1,5 +1,4 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../components/customer-item.html"/>
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html"/>
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html"/>
 <link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html"/>
@@ -21,7 +20,7 @@
 
         <template is="dom-repeat" items="{{ conversations }}">
 
-            <paper-item>
+            <paper-item on-click="goConversation">
                 <div class="avatar green" item-icon>
                     <img src="http://www.iconsfind.com/wp-content/uploads/2015/08/20150831_55e46aeb19862-210x210.png"
                          alt=""
@@ -44,6 +43,7 @@
         <iron-ajax
                 id="ajax"
                 url=""
+                body=""
                 method="POST"
                 handle-as="json"
                 on-response="_handleResponse"></iron-ajax>
@@ -60,13 +60,11 @@
         properties: {
             conversations: {
                 type: Array,
-                value: function () {
-                    return [];
-                }
+                value: UserStore.getConversations()
             },
             isEmpty: {
                 type: Boolean,
-                value: true
+                value: UserStore.getConversations().length == 0
             }
         },
 
@@ -80,15 +78,17 @@
             var self = this;
             this.id = Dispatcher.register('INITIALISATION_DONE', {
                 receive: function () {
-                    console.log(UserStore.getSim(), UserStore.getContacts());
-                    self.$.ajax.url = 'http://localhost:7070/' + ( localStorage.getItem('isSignedIn') ? 'login' : 'signin' );
-                    self.$.ajax.params = {
+                    self.$.ajax.url = 'http://192.168.1.11:7070/' + ( localStorage.getItem('isSignedIn') ? 'login' : 'signin' );
+                    self.$.ajax.headers = {
+                        'Content-Type': 'application/json'
+                    };
+                    self.$.ajax.body = {
                         phone_number: UserStore.getSim().phoneNumber,
                         contacts: UserStore.getContacts().map(function (contact) {
                             return contact.phoneNumber;
                         })
                     };
-                    //self.$.ajax.generateRequest();
+                    self.$.ajax.generateRequest();
                 }
             });
             UserStore.init();
@@ -99,11 +99,16 @@
         },
 
         _handleResponse: function (request) {
+            console.log(request.detail.response);
             if (request.detail.response.status == 'success') {
                 if ( !localStorage.getItem('isSignedIn') ) localStorage.setItem('isSignedIn', true);
                 UserStore.matchConversationWithName(request.detail.response.data.conversations);
                 this.set('conversations', UserStore.getConversations());
             }
+        },
+
+        goConversation: function (item) {
+            document.querySelector('app-router').go('/conversation/' + item.model.item._id);
         }
 
     });

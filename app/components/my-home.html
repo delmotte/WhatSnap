@@ -43,6 +43,7 @@
         <iron-ajax
                 id="ajax"
                 url=""
+                body=""
                 method="POST"
                 handle-as="json"
                 on-response="_handleResponse"></iron-ajax>
@@ -67,27 +68,27 @@
             }
         },
 
-        ready: function () {
-            // Take the real data
-            //this.set('customers', Model.customers);
-        },
-
         attached: function () {
-            // add this element to the dispatcher
             var self = this;
             this.id = Dispatcher.register('INITIALISATION_DONE', {
                 receive: function () {
                     self.$.ajax.url = 'http://localhost:7070/' + ( localStorage.getItem('isSignedIn') ? 'login' : 'signin' );
-                    self.$.ajax.params = {
+                    self.$.ajax.headers = {
+                        'Content-Type': 'application/json'
+                    };
+                    self.$.ajax.body = {
                         phone_number: UserStore.getSim().phoneNumber,
                         contacts: UserStore.getContacts().map(function (contact) {
                             return contact.phoneNumber;
                         })
                     };
-                    //self.$.ajax.generateRequest();
+                    self.$.ajax.generateRequest();
                 }
             });
-            UserStore.init();
+            if (UserStore.init()) {
+                this.set('conversations', UserStore.getConversations());
+                this.set('isEmpty', UserStore.getConversations().length == 0);
+            }
         },
 
         detached: function () {
@@ -99,6 +100,7 @@
                 if ( !localStorage.getItem('isSignedIn') ) localStorage.setItem('isSignedIn', true);
                 UserStore.matchConversationWithName(request.detail.response.data.conversations);
                 this.set('conversations', UserStore.getConversations());
+                this.set('isEmpty', UserStore.getConversations().length == 0);
             }
         },
 

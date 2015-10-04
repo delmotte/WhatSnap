@@ -1,25 +1,34 @@
 var UserStore = (function () {
 
-    var _sim = {}, _contacts = {}, _conversations;
+    var _sim = {},
+        _contacts = [],
+        _conversations = [],
+        initialized = false;
 
     function init() {
-        window.plugins.sim.getSimInfo(function (sim) {
-            _sim = sim;
-            navigator.contactsPhoneNumbers.list(function(contacts) {
-                console.log('cpnot', contacts);
-                _contacts = contacts.map(function (contact) {
-                    return {
-                        phoneNumber: contact.phoneNumbers.length > 0 ? contact.phoneNumbers[0].normalizedNumber : null,
-                        name: contact.displayName
-                    };
+        if (!initialized) {
+
+            // TODO : socket connection
+
+            initialized = true;
+            window.plugins.sim.getSimInfo(function (sim) {
+                _sim = sim;
+                navigator.contactsPhoneNumbers.list(function(contacts) {
+                    _contacts = contacts.map(function (contact) {
+                        return {
+                            phoneNumber: contact.phoneNumbers.length > 0 ? contact.phoneNumbers[0].normalizedNumber : null,
+                            name: contact.displayName
+                        };
+                    });
+                    Dispatcher.emit('INITIALISATION_DONE');
+                }, function() {
+                    Dispatcher.emit('NO_CONTACT_LIST', {});
                 });
-                Dispatcher.emit('INITIALISATION_DONE');
-            }, function() {
-                Dispatcher.emit('NO_CONTACT_LIST', {});
+            }, function () {
+                Dispatcher.emit('NO_SIM_DETECTED', {});
             });
-        }, function () {
-            Dispatcher.emit('NO_SIM_DETECTED', {});
-        });
+
+        }
     }
 
     function matchConversationWithName(conversations) {
@@ -27,7 +36,7 @@ var UserStore = (function () {
         for (var i in _conversations) {
             for (var j in _contacts) {
                 if ( _conversations[i].usersId.indexOf(_contacts[j].phoneNumber) > -1) {
-                    _conversations[i].name = _contacts[j].displayName;
+                    _conversations[i].name = _contacts[j].name;
                 }
             }
         }
@@ -46,4 +55,5 @@ var UserStore = (function () {
             return _conversations;
         }
     };
+
 })();
