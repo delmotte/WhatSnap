@@ -11,7 +11,6 @@ module.exports = {
      * @returns {*}
      */
     signin: function (req, res) {
-        console.log('body',req.body);
         if (!req.body.phone_number || !req.body.contacts) return res.json({status:'error', message:'missing param'});
         database.request(function (db) {
             var users = db.collection('users');
@@ -71,7 +70,6 @@ module.exports = {
     login: function (req, res) {
         if (!req.body.phone_number || !req.body.contacts) return res.json({status:'error', message:'missing param'});
         database.request(function (db) {
-            var users = db.collection('users');
             var conversations = db.collection('conversations');
 
             conversations.find({

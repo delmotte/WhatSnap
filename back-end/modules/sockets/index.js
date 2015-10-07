@@ -43,6 +43,35 @@ module.exports = {
 
         socket.on('user_destination', function (phone) {
             last_destination_user = phone;
+            var date = new Date();
+            database.request(function (db) {
+                var conversations = db.collection('conversations');
+                conversations.find({
+                    $and: [
+                        { usersId: phone_number },
+                        { usersId: last_destination_user }
+                    ]
+                }).forEach(function (conversation) {
+                    conversation.messages.forEach(function (message) {
+                        if (message.sendBy == last_destination_user && message.read === false) {
+                            message.read = {
+                                date: date,
+                                place: null
+                            };
+                        }
+                    });
+                    db.collection('conversations').save(conversation);
+                }, function () {
+                    var emitSocket = sockets[last_destination_user];
+                    if (emitSocket) {
+                        emitSocket.emit('read', {
+                            date: date,
+                            place: null
+                        });
+                    }
+                    db.close();
+                });
+            });
         });
 
         /** UPLOAD **/
@@ -66,9 +95,12 @@ module.exports = {
                             messages: {
                                 sendBy: phone_number,
                                 image_url: event.file.pathName,
-                                sendAt: date
+                                sendAt: date,
+                                read: false
                             }
                         }
+                    }).then(function () {
+                        db.close();
                     });
                 });
             }

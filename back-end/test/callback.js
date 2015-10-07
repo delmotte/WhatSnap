@@ -103,7 +103,8 @@ describe('User Callback Test', function () {
                     messages: {
                         sendBy: user.phone_number,
                         image_url: 'coucou.png',
-                        sendAt: new Date()
+                        sendAt: new Date(),
+                        read: false
                     }
                 }
             }, function (err) {
@@ -116,6 +117,39 @@ describe('User Callback Test', function () {
                 }, function (err, result) {
                     if (err) throw err;
                     assert.equal(1, result.messages.length);
+                    done();
+                });
+            });
+        });
+    });
+
+    it ('should update the read attributes of the conversation', function (done) {
+        database.request(function (db) {
+            var conversations = db.collection('conversations');
+            conversations.find({
+                $and: [
+                    { usersId: user.phone_number },
+                    { usersId: user2.phone_number }
+                ]
+            }).forEach(function (conversation) {
+                conversation.messages.forEach(function (message) {
+                    if (message.sendBy == user.phone_number && message.read === false) {
+                        message.read = {
+                            date: new Date(),
+                            place: null
+                        };
+                    }
+                });
+                db.collection('conversations').save(conversation);
+            }, function () {
+                conversations.findOne({
+                    $and: [
+                        { usersId: user.phone_number },
+                        { usersId: user2.phone_number }
+                    ]
+                }).then(function (result) {
+                    assert.equal(null, result.messages[0].read.place);
+                    db.close();
                     done();
                 });
             });
