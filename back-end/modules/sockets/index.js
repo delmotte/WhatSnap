@@ -65,6 +65,7 @@ module.exports = {
                     var emitSocket = sockets[last_destination_user];
                     if (emitSocket) {
                         emitSocket.emit('read', {
+                            phoneNumber: last_destination_user,
                             date: date,
                             place: null
                         });

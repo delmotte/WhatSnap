@@ -1,17 +1,26 @@
+/**
+ * Store all the user data for the app
+ * @type {{init, matchConversationWithName, enterConversation, getSim, getContacts, getConversations}}
+ */
 var UserStore = (function () {
 
     var _sim = {},
         _contacts = [],
         _conversations = [],
-        socket = null;
+        socket = null,
         initialized = false;
 
+    /**
+     * Init the app
+     * @returns {boolean}
+     */
     function init() {
         var valueToReturn = initialized;
         if (!initialized) {
 
             socket = io.connect('http://localhost:7070');
 
+            // receive a new message
             socket.on('new_message', function (message) {
                 console.log('new message', message);
                 for (var i in _conversations) {
@@ -27,6 +36,25 @@ var UserStore = (function () {
                 }
             });
 
+            // receive that a conversation has been read by another user
+            socket.on('read', function (object) {
+                for (var i in _conversations) {
+                    if (_conversations[i].usersId.indexOf(object.phoneNumber) > -1) {
+                        for (var j in _conversations[i].messages) {
+                            if (_conversations[i].messages[j].sendBy == _sim.phoneNumber) {
+                                _conversations[i].messages[j].read = {
+                                    date: object.date,
+                                    place: object.place
+                                };
+                                Dispatcher.emit('READ');
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+            });
+
             initialized = true;
             _sim = {phoneNumber: "+33678469859"};
             _contacts = [{phoneNumber:"+33786625527", name: 'Jean-Yves DELMOTTE'}];
@@ -36,6 +64,10 @@ var UserStore = (function () {
         return valueToReturn;
     }
 
+    /**
+     * find name that match the server conversations
+     * @param conversations
+     */
     function matchConversationWithName(conversations) {
         _conversations = conversations;
         for (var i in _conversations) {
@@ -47,6 +79,12 @@ var UserStore = (function () {
         }
     }
 
+    /**
+     * emit to the server that we enter in a conversation and that we have read the message
+     * of the conversation
+     * @param conversationId
+     * @returns {string}
+     */
     function enterConversation(conversationId) {
         var userId = null;
         var userName = '';
