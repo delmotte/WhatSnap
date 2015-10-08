@@ -4,7 +4,7 @@
 <link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html"/>
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html"/>
 
-<dom-module id="my-conversation">
+<dom-module id="my-conversation" attributes="conversationId">
     <style>
         .container {
             margin-top:20px;
@@ -106,50 +106,36 @@
 
     <template>
 
+        <!-- menu bar -->
         <paper-toolbar>
             <paper-icon-button icon="arrow-back" on-click="goBack"></paper-icon-button>
-            <div class="title">Contact Name</div>
+            <div class="title">{{ userName }}</div>
         </paper-toolbar>
 
+        <!-- message container -->
         <div class="messages-container" id="messages">
-            <div class="container">
-                <div class="contact-img">
-                    <img src="http://www.iconsfind.com/wp-content/uploads/2015/08/20150831_55e46aeb19862-210x210.png"
-                         alt=""
-                         style="height:54px;position:relative;float:left;"/>
+
+            <!-- Display all messages -->
+            <template is="dom-repeat" items="{{ messages }}">
+
+                <div class="container">
+                    <div class="contact-img">
+                        <img src="http://www.iconsfind.com/wp-content/uploads/2015/08/20150831_55e46aeb19862-210x210.png"
+                             alt=""
+                             style="height:54px;position:relative;float:left;"/>
+                    </div>
+
+                    <div class$="{{leftOrRight(item.sendBy)}}">
+                        <img src="{{ item.image_url }}" alt=""/>
+                        {{ item.sendAt }}, {{ item.sendFrom }}
+                    </div>
                 </div>
 
-                <div class="bubble-left">
-                    <img src="http://images-et-photos.com/wp-content/uploads/sites/3/2015/03/photo-06.jpg" alt=""/>
-                    10:07 AM, London
-                </div>
-            </div>
-            <div class="container">
-                <div class="contact-img">
-                    <img src="http://www.iconsfind.com/wp-content/uploads/2015/08/20150831_55e46aeb19862-210x210.png"
-                         alt=""
-                         style="height:54px;position:relative;float:right;"/>
-                </div>
+            </template>
 
-                <div class="bubble-right">
-                    <img src="https://photographylife.com/wp-content/uploads/2014/06/Nikon-D810-Image-Sample-6.jpg" alt=""/>
-                    10:07 AM, London
-                </div>
-            </div>
-            <div class="container">
-                <div class="contact-img">
-                    <img src="http://www.iconsfind.com/wp-content/uploads/2015/08/20150831_55e46aeb19862-210x210.png"
-                         alt=""
-                         style="height:54px;position:relative;float:left;"/>
-                </div>
-
-                <div class="bubble-left">
-                    <img src="https://www.wonderplugin.com/wp-content/plugins/wonderplugin-lightbox/images/demo-image0.jpg" alt=""/>
-                    10:07 AM, London
-                </div>
-            </div>
         </div>
 
+        <!-- add photo from camera -->
         <div class="add-photo">
             <paper-fab icon="camera-enhance"></paper-fab>
         </div>
@@ -162,11 +148,11 @@
     Polymer({
         is: 'my-conversation',
 
-        properties: {
+        messages: {
             conversations: {
                 type: Array,
                 value: function () {
-                    return [{name:'Allan'},{ name:'Bonjour'}];
+                    return [];
                 }
             },
             isEmpty: {
@@ -176,6 +162,10 @@
             loading: {
                 type:Boolean,
                 value: true
+            },
+            userName: {
+                type:String,
+                value: 'noone'
             }
         },
 
@@ -185,6 +175,9 @@
 
         ready: function () {
             var self = this;
+            /**
+             * When all the images finished to load, scroll to the bottom of the conversation
+             */
             this.async(function() {
                 var imgs = document.querySelectorAll('.bubble-right img, .bubble-left img');
                 var index = 0;
@@ -200,6 +193,22 @@
 
             });
 
+        },
+
+        attached: function () {
+            var conversation = UserStore.enterConversation(this.conversationId);
+            this.set('userName', conversation.name);
+            this.set('messages', conversation.messages);
+            var self = this;
+            this.id = Dispatcher.register('NEW_MESSAGE', {
+                receive: function (conversation) {
+                    self.set('messages', conversation.messages);
+                }
+            });
+        },
+
+        leftOrRight: function (sendBy) {
+            return sendBy == UserStore.getSim().phoneNumber ? 'bubble-right' : 'bubble-left';
         }
 
     });

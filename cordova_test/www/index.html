@@ -16,10 +16,12 @@
     <app-router>
         <app-route path="/" import="./components/my-home.html"></app-route>
         <app-route path="/home" redirect="/"></app-route>
+        <app-route path="/profile" import="./components/my-profile.html"></app-route>
         <app-route path="/conversation/:conversationId" import="./components/my-conversation.html"></app-route>
         <app-route path="*" redirect="/"></app-route>
     </app-router>
 
+    <script src="http://134.59.214.62:7070/socket.io/socket.io.js"></script>
     <script type="text/javascript" src="cordova.js"></script>
 
 </body>

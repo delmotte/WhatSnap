@@ -8,16 +8,16 @@
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html"/>
 
 <dom-module id="my-home">
-    <style>
-    </style>
 
     <template>
 
+        <!-- menu bar -->
         <paper-toolbar>
             <paper-icon-button icon="menu"></paper-icon-button>
             <div class="title">WhatSnap</div>
         </paper-toolbar>
 
+        <!-- Display all conversations -->
         <template is="dom-repeat" items="{{ conversations }}">
 
             <paper-item on-click="goConversation">
@@ -35,11 +35,11 @@
 
         </template>
 
-
         <template is="dom-if" if="{{isEmpty}}">
             No one of your contacts use the app !
         </template>
 
+        <!-- Ajax call for login / signin -->
         <iron-ajax
                 id="ajax"
                 url=""
@@ -56,7 +56,9 @@
     Polymer({
         is: 'my-home',
 
-        // initialize data
+        /**
+         * Data initialization
+         */
         properties: {
             conversations: {
                 type: Array,
@@ -68,17 +70,11 @@
             }
         },
 
-        ready: function () {
-            // Take the real data
-            //this.set('customers', Model.customers);
-        },
-
         attached: function () {
-            // add this element to the dispatcher
             var self = this;
             this.id = Dispatcher.register('INITIALISATION_DONE', {
                 receive: function () {
-                    self.$.ajax.url = 'http://192.168.1.11:7070/' + ( localStorage.getItem('isSignedIn') ? 'login' : 'signin' );
+                    self.$.ajax.url = 'http://134.59.214.62:7070/' + ( localStorage.getItem('isSignedIn') ? 'login' : 'signin' );
                     self.$.ajax.headers = {
                         'Content-Type': 'application/json'
                     };
@@ -91,19 +87,29 @@
                     self.$.ajax.generateRequest();
                 }
             });
-            UserStore.init();
+
+            // init only the first time we come
+            if (UserStore.init()) {
+                this.set('conversations', UserStore.getConversations());
+                this.set('isEmpty', UserStore.getConversations().length == 0);
+            }
         },
 
         detached: function () {
             Dispatcher.destroy({id:this.id});
         },
 
+        /**
+         * Response from the signin / login
+         * @param request
+         * @private
+         */
         _handleResponse: function (request) {
-            console.log(request.detail.response);
             if (request.detail.response.status == 'success') {
                 if ( !localStorage.getItem('isSignedIn') ) localStorage.setItem('isSignedIn', true);
                 UserStore.matchConversationWithName(request.detail.response.data.conversations);
                 this.set('conversations', UserStore.getConversations());
+                this.set('isEmpty', UserStore.getConversations().length == 0);
             }
         },
 

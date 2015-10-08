@@ -8,16 +8,16 @@
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html"/>
 
 <dom-module id="my-home">
-    <style>
-    </style>
 
     <template>
 
+        <!-- menu bar -->
         <paper-toolbar>
             <paper-icon-button icon="menu"></paper-icon-button>
             <div class="title">WhatSnap</div>
         </paper-toolbar>
 
+        <!-- Display all conversations -->
         <template is="dom-repeat" items="{{ conversations }}">
 
             <paper-item on-click="goConversation">
@@ -35,11 +35,11 @@
 
         </template>
 
-
         <template is="dom-if" if="{{isEmpty}}">
             No one of your contacts use the app !
         </template>
 
+        <!-- Ajax call for login / signin -->
         <iron-ajax
                 id="ajax"
                 url=""
@@ -56,7 +56,9 @@
     Polymer({
         is: 'my-home',
 
-        // initialize data
+        /**
+         * Data initialization
+         */
         properties: {
             conversations: {
                 type: Array,
@@ -85,6 +87,8 @@
                     self.$.ajax.generateRequest();
                 }
             });
+
+            // init only the first time we come
             if (UserStore.init()) {
                 this.set('conversations', UserStore.getConversations());
                 this.set('isEmpty', UserStore.getConversations().length == 0);
@@ -95,6 +99,11 @@
             Dispatcher.destroy({id:this.id});
         },
 
+        /**
+         * Response from the signin / login
+         * @param request
+         * @private
+         */
         _handleResponse: function (request) {
             if (request.detail.response.status == 'success') {
                 if ( !localStorage.getItem('isSignedIn') ) localStorage.setItem('isSignedIn', true);

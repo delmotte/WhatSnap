@@ -11,7 +11,7 @@ var UserStore = (function () {
         initialized = false;
 
     /**
-     * Init the app
+     * Init the app just one time
      * @returns {boolean}
      */
     function init() {
@@ -22,7 +22,6 @@ var UserStore = (function () {
 
             // receive a new message
             socket.on('new_message', function (message) {
-                console.log('new message', message);
                 for (var i in _conversations) {
                     if (_conversations[i].usersId.indexOf(message.sendBy) > -1) {
                         _conversations[i].messages.push({
@@ -30,7 +29,7 @@ var UserStore = (function () {
                             image_url: message.image_url,
                             sendAt: message.sendAt
                         });
-                        Dispatcher.emit('NEW_MESSAGE');
+                        Dispatcher.emit('NEW_MESSAGE', _conversations[i]);
                         break;
                     }
                 }
@@ -87,18 +86,18 @@ var UserStore = (function () {
      */
     function enterConversation(conversationId) {
         var userId = null;
-        var userName = '';
+        var conversation = {};
         for (var i in _conversations) {
             if (_conversations[i]._id = conversationId) {
                 var index = _conversations[i].usersId.indexOf(_sim.phoneNumber);
                 var tab = _conversations[i].usersId.splice(index, 1);
                 userId = tab[0];
-                userName = _conversations[i].name;
+                conversation = _conversations[i];
                 socket.emit('user_destination', userId);
                 break;
             }
         }
-        return userName;
+        return conversation;
     }
 
     return {
