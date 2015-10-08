@@ -74,7 +74,7 @@
             var self = this;
             this.id = Dispatcher.register('INITIALISATION_DONE', {
                 receive: function () {
-                    self.$.ajax.url = 'http://134.59.214.62:7070/' + ( localStorage.getItem('isSignedIn') ? 'login' : 'signin' );
+                    self.$.ajax.url = 'http://localhost:7070/' + ( localStorage.getItem('isSignedIn') ? 'login' : 'signin' );
                     self.$.ajax.headers = {
                         'Content-Type': 'application/json'
                     };

@@ -13,7 +13,7 @@
             text-align:right;
         }
 
-        .bubble-left {
+        .container > .bubble-left {
             position:relative;
             top:6px;
             margin-left:75px;
@@ -25,7 +25,7 @@
             border-radius: 10px;
         }
 
-        .bubble-right {
+        .container > .bubble-right {
             position:relative;
             top:6px;
             margin:auto;
@@ -39,14 +39,14 @@
             border-radius: 10px;
         }
 
-        .bubble-left img, .bubble-right img {
+        .container > .bubble-left img, .container > .bubble-right img {
             width:100%;
             height:auto;
             display:block;
             margin-bottom:10px;
         }
 
-        .bubble-left:after {
+        .container >  .bubble-left:after {
             content: '';
             position: absolute;
             border-style: solid;
@@ -59,7 +59,7 @@
             top: 14px;
         }
 
-        .bubble-right:after {
+        .container > .bubble-right:after {
             content: '';
             position: absolute;
             border-style: solid;
@@ -102,6 +102,10 @@
             top:-12px;
         }
 
+        img.bubble-right {
+            float:right!important;
+        }
+
     </style>
 
     <template>
@@ -120,14 +124,15 @@
 
                 <div class="container">
                     <div class="contact-img">
-                        <img src="http://www.iconsfind.com/wp-content/uploads/2015/08/20150831_55e46aeb19862-210x210.png"
+                        <img  class$="{{leftOrRight(item)}}"
+                                src="http://www.iconsfind.com/wp-content/uploads/2015/08/20150831_55e46aeb19862-210x210.png"
                              alt=""
                              style="height:54px;position:relative;float:left;"/>
                     </div>
 
-                    <div class$="{{leftOrRight(item.sendBy)}}">
+                    <div class$="{{leftOrRight(item)}}">
                         <img src="{{ item.image_url }}" alt=""/>
-                        {{ item.sendAt }}, {{ item.sendFrom }}
+                        <div>{{ displayFromAndAt(item) }}</div>
                     </div>
                 </div>
 
@@ -148,11 +153,26 @@
     Polymer({
         is: 'my-conversation',
 
-        messages: {
-            conversations: {
+        properties: {
+            messages: {
                 type: Array,
                 value: function () {
-                    return [];
+                    return [{
+                        sendBy: '',
+                        sendAt: 'coucou',
+                        sendFrom: 'laule',
+                        image_url: 'http://soocurious.com/fr/wp-content/uploads/2014/03/des-ours-aux-comportements-humains1.jpg'
+                    },{
+                        sendBy: '',
+                        sendAt: 'coucou',
+                        sendFrom: 'laule',
+                        image_url: 'http://soocurious.com/fr/wp-content/uploads/2014/03/des-ours-aux-comportements-humains1.jpg'
+                    },{
+                        sendBy: '+33678469859',
+                        sendAt: 'coucou',
+                        sendFrom: 'laule',
+                        image_url: 'http://soocurious.com/fr/wp-content/uploads/2014/03/des-ours-aux-comportements-humains1.jpg'
+                    }];
                 }
             },
             isEmpty: {
@@ -196,9 +216,12 @@
         },
 
         attached: function () {
+            if (!UserStore.getSim()) {
+                document.querySelector('app-router').go('/');
+            }
             var conversation = UserStore.enterConversation(this.conversationId);
             this.set('userName', conversation.name);
-            this.set('messages', conversation.messages);
+            //this.set('messages', conversation.messages);
             var self = this;
             this.id = Dispatcher.register('NEW_MESSAGE', {
                 receive: function (conversation) {
@@ -207,8 +230,16 @@
             });
         },
 
-        leftOrRight: function (sendBy) {
-            return sendBy == UserStore.getSim().phoneNumber ? 'bubble-right' : 'bubble-left';
+        detached: function () {
+            Dispatcher.destroy({id:this.id});
+        },
+
+        leftOrRight: function (item, boolean) {
+            return (boolean ? 'img-' : '') + (item.sendBy == UserStore.getSim().phoneNumber ? 'bubble-right' : 'bubble-left');
+        },
+
+        displayFromAndAt: function (item) {
+            return item.sendAt + ', ' + item.sendFrom;
         }
 
     });

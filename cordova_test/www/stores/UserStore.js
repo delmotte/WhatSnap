@@ -4,7 +4,7 @@
  */
 var UserStore = (function () {
 
-    var _sim = {},
+    var _sim = false,
         _contacts = [],
         _conversations = [],
         socket = null,
