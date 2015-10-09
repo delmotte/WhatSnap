@@ -7,84 +7,13 @@
 
 <dom-module id="my-conversation" attributes="conversationId">
     <style>
-        .container {
-            margin-top:20px;
-            padding-left:20px;
-            padding-right:20px;
-            text-align:right;
-        }
-
-        .container > .bubble-left {
-            position:relative;
-            top:6px;
-            margin-left:75px;
-            width: calc(100% - 100px);
-            padding: 10px;
-            background: #DDDDDD;
-            -webkit-border-radius: 10px;
-            -moz-border-radius: 10px;
-            border-radius: 10px;
-        }
-
-        .container > .bubble-right {
-            position:relative;
-            top:6px;
-            margin:auto;
-            right:0px;
-            margin-right:75px;
-            width: calc(100% - 100px);
-            padding: 10px;
-            background: #DDDDDD;
-            -webkit-border-radius: 10px;
-            -moz-border-radius: 10px;
-            border-radius: 10px;
-        }
-
-        .container > .bubble-left img, .container > .bubble-right img {
-            width:100%;
-            height:auto;
-            display:block;
-            margin-bottom:10px;
-        }
-
-        .container >  .bubble-left:after {
-            content: '';
-            position: absolute;
-            border-style: solid;
-            border-width: 7px 21px 7px 0;
-            border-color: transparent #DDDDDD;
-            display: block;
-            width: 0;
-            z-index: 1;
-            left: -21px;
-            top: 14px;
-        }
-
-        .container > .bubble-right:after {
-            content: '';
-            position: absolute;
-            border-style: solid;
-            border-width: 7px 0px 7px 21px;
-            border-color: transparent #DDDDDD;
-            display: block;
-            width: 0;
-            z-index: 1;
-            right: -21px;
-            top: 14px;
-        }
-
-        .messages-container {
-            padding-bottom:100px;
-            padding-top:64px;
-            padding-left: 12%;
-        }
 
         @media (max-width: 639px) {
-            .messages-container {
-                padding-top:56px;
-            }
             side-thumbnail{
                 top: 56px !important;
+            }
+            .image-container {
+                padding-top: 56px!important;
             }
 
         }
@@ -101,16 +30,15 @@
             bottom:0px;
             display:block;
             width:100%;
-            text-align:center;
+            text-align:right;
+
         }
 
         .add-photo paper-fab {
             top:-12px;
+            right:12px;
         }
 
-        img.bubble-right {
-            float:right!important;
-        }
         side-thumbnail{
             position: fixed;
             left: 0;
@@ -128,6 +56,45 @@
             background-position: center center;
             background-repeat: no-repeat;
         }
+
+
+        .image-container {
+            padding-top: 64px;
+            left: 12%;
+            width:88%;
+            height: 100%;
+            position: absolute;
+            display:block;
+            background-color: black;
+        }
+
+        .image-container > img {
+            position: absolute;
+            max-width: 100%;
+            top: 10%;
+            left: 10%;
+            border-radius: 3px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.9);
+        }
+
+        .image-container > img:empty {
+            top: 50%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -moz-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            -o-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+
+        @media screen and (orientation: portrait) {
+            .image-container > img:empty { max-width: 100%; }
+        }
+
+        @media screen and (orientation: landscape) {
+            .image-container > img:empty { max-height: 90%; }
+        }
+
     </style>
 
     <template>
@@ -148,34 +115,15 @@
 
 
 
-        <!-- message container -->
-        <div class="messages-container" id="messages">
-
-            <!-- Display all messages -->
-            <template is="dom-repeat" items="{{ messages }}">
-
-                <div class="container">
-                    <div class="contact-img">
-                        <img  class$="{{leftOrRight(item)}}"
-                                src="http://www.iconsfind.com/wp-content/uploads/2015/08/20150831_55e46aeb19862-210x210.png"
-                             alt=""
-                             style="height:54px;position:relative;float:left;"/>
-                    </div>
-
-                    <div class$="{{leftOrRight(item)}}">
-                        <img src="{{ item.image_url }}" alt=""/>
-                        <div>{{ displayFromAndAt(item) }}</div>
-                    </div>
-                </div>
-
-            </template>
-
+        <!-- image container -->
+        <div class="image-container" id="messages">
+                <img src="http://soocurious.com/fr/wp-content/uploads/2014/03/des-ours-aux-comportements-humains1.jpg" alt=""/>
         </div>
 
         <!-- add photo from camera -->
         <div class="add-photo">
             <input type="file" id="upload_input" accept="image/*" style="display:none"/>
-            <paper-fab id="upload_btn" icon="camera-enhance" on-click="sendPicture"></paper-fab>
+            <paper-fab id="upload_btn" icon="camera-enhance" on-click="_sendPicture"></paper-fab>
         </div>
 
     </template>
@@ -247,8 +195,11 @@
 
         displayFromAndAt: function (item) {
             return item.sendAt + ', ' + item.sendFrom;
-        }
+        },
 
+        _sendPicture: function () {
+            document.querySelector('#upload_input').dispatchEvent(new Event('click'));
+        }
 
     });
 </script>
