@@ -108,7 +108,7 @@
         <side-thumbnail>
             <!-- Display all messages -->
             <template is="dom-repeat" items="{{ messages }}" >
-                    <div class="img_container" backgroundImage="url({{ item.image_url }})" >
+                    <div class$="{{buildClass(item.image_url)}}" >
                     </div>
             </template>
         </side-thumbnail>
@@ -184,6 +184,7 @@
                 }
 
             });
+
         },
 
         detached: function () {
@@ -199,6 +200,25 @@
 
         _sendPicture: function () {
             document.querySelector('#upload_input').dispatchEvent(new Event('click'));
+        },
+
+        buildClass: function (image_url) {
+            return 'img_container img-unique ' + image_url ;
+        },
+
+        ready: function () {
+            var self = this;
+            setTimeout(function () {
+                var imgs = document.querySelectorAll('.img-unique');
+                for (var i = 0; i < imgs.length; i++) {
+                    self.modify(imgs[i]);
+                }
+            });
+
+        },
+
+        modify: function (image) {
+            image.style.background = 'url(' + (''+image.className).split(' ')[2] + ')';
         }
 
     });
