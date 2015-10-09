@@ -67,4 +67,27 @@ var talks = [{
         sendFrom: 'laule',
         image_url: 'http://soocurious.com/fr/wp-content/uploads/2014/03/des-ours-aux-comportements-humains1.jpg'
     }]
-}]
+},{
+    id:4,
+    image: 'https://lh4.googleusercontent.com/-E-it515m_To/AAAAAAAAAAI/AAAAAAAADTA/S87WyAmmVsE/photo.jpg',
+    name: 'Christian Brel',
+    date: '5 Years ago',
+    place: 'Sophia Antipolis',
+    notif: 0,
+    messages: [{
+        sendBy: 'right',
+        sendAt: 'coucou',
+        sendFrom: 'laule',
+        image_url: 'http://soocurious.com/fr/wp-content/uploads/2014/03/des-ours-aux-comportements-humains1.jpg'
+    },{
+        sendBy: 'right',
+        sendAt: 'coucou',
+        sendFrom: 'laule',
+        image_url: 'http://soocurious.com/fr/wp-content/uploads/2014/03/des-ours-aux-comportements-humains1.jpg'
+    },{
+        sendBy: 'left',
+        sendAt: 'coucou',
+        sendFrom: 'laule',
+        image_url: 'http://soocurious.com/fr/wp-content/uploads/2014/03/des-ours-aux-comportements-humains1.jpg'
+    }]
+}];
