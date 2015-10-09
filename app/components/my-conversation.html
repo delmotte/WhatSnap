@@ -3,6 +3,7 @@
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html"/>
 <link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html"/>
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html"/>
+<link rel="import" href="side-thumbnail.html"/>
 
 <dom-module id="my-conversation" attributes="conversationId">
     <style>
@@ -75,6 +76,7 @@
         .messages-container {
             padding-bottom:100px;
             padding-top:64px;
+            padding-left: 12%;
         }
 
         @media (max-width: 639px) {
@@ -105,6 +107,18 @@
         img.bubble-right {
             float:right!important;
         }
+        side-thumbnail{
+            position: fixed;
+            left: 0;
+            top: 64px;
+            z-index: 1000;
+            height: 100%;
+            background-color: grey;
+            width : 12%;
+        }
+        side-thumbnail  img{
+            max-width: 100%;
+        }
 
     </style>
 
@@ -115,6 +129,17 @@
             <paper-icon-button icon="arrow-back" on-click="goBack"></paper-icon-button>
             <div class="title">{{ userName }}</div>
         </paper-toolbar>
+
+        <side-thumbnail>
+            <!-- Display all messages -->
+            <template is="dom-repeat" items="{{ messages }}">
+                    <div>
+                        <img src="{{ item.image_url }}" alt=""/>
+                    </div>
+            </template>
+        </side-thumbnail>
+
+
 
         <!-- message container -->
         <div class="messages-container" id="messages">
