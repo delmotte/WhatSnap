@@ -64,8 +64,20 @@
             }
         },
 
+        attached: function () {
+            window.addEventListener('resize', this._resize, true);
+        },
+
+        detached: function () {
+            window.removeEventListener('resize', this._resize, true);
+        },
+
         goConversation: function (item) {
             document.querySelector('app-router').go('/conversation/' + item.model.item.id);
+        },
+
+        _resize: function (e) {
+            console.log(window.innerWidth);
         }
 
     });
