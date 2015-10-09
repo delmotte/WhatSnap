@@ -142,7 +142,8 @@
 
         <!-- add photo from camera -->
         <div class="add-photo">
-            <paper-fab icon="camera-enhance"></paper-fab>
+            <input type="file" id="upload_input" accept="image/*" style="display:none"/>
+            <paper-fab id="upload_btn" icon="camera-enhance" on-click="sendPicture"></paper-fab>
         </div>
 
     </template>
@@ -156,24 +157,7 @@
         properties: {
             messages: {
                 type: Array,
-                value: function () {
-                    return [{
-                        sendBy: '',
-                        sendAt: 'coucou',
-                        sendFrom: 'laule',
-                        image_url: 'http://soocurious.com/fr/wp-content/uploads/2014/03/des-ours-aux-comportements-humains1.jpg'
-                    },{
-                        sendBy: '',
-                        sendAt: 'coucou',
-                        sendFrom: 'laule',
-                        image_url: 'http://soocurious.com/fr/wp-content/uploads/2014/03/des-ours-aux-comportements-humains1.jpg'
-                    },{
-                        sendBy: '+33678469859',
-                        sendAt: 'coucou',
-                        sendFrom: 'laule',
-                        image_url: 'http://soocurious.com/fr/wp-content/uploads/2014/03/des-ours-aux-comportements-humains1.jpg'
-                    }];
-                }
+                value: []
             },
             isEmpty: {
                 type: Boolean,
@@ -185,7 +169,7 @@
             },
             userName: {
                 type:String,
-                value: 'noone'
+                value: 'Contact Name'
             }
         },
 
@@ -193,7 +177,15 @@
             document.querySelector('app-router').go('/home');
         },
 
-        ready: function () {
+        attached: function () {
+            for (var i in talks) {
+                if (talks[i].id == this.conversationId) {
+                    this.set('userName', talks[i].name);
+                    this.set('messages', talks[i].messages);
+                    break;
+                }
+            }
+
             var self = this;
             /**
              * When all the images finished to load, scroll to the bottom of the conversation
@@ -212,35 +204,19 @@
                 }
 
             });
-
-        },
-
-        attached: function () {
-            if (!UserStore.getSim()) {
-                document.querySelector('app-router').go('/');
-            }
-            var conversation = UserStore.enterConversation(this.conversationId);
-            this.set('userName', conversation.name);
-            //this.set('messages', conversation.messages);
-            var self = this;
-            this.id = Dispatcher.register('NEW_MESSAGE', {
-                receive: function (conversation) {
-                    self.set('messages', conversation.messages);
-                }
-            });
         },
 
         detached: function () {
-            Dispatcher.destroy({id:this.id});
         },
 
         leftOrRight: function (item, boolean) {
-            return (boolean ? 'img-' : '') + (item.sendBy == UserStore.getSim().phoneNumber ? 'bubble-right' : 'bubble-left');
+            return (boolean ? 'img-' : '') + (item.sendBy == 'right' ? 'bubble-right' : 'bubble-left');
         },
 
         displayFromAndAt: function (item) {
             return item.sendAt + ', ' + item.sendFrom;
         }
+
 
     });
 </script>

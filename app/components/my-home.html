@@ -9,6 +9,14 @@
 
 <dom-module id="my-home">
 
+    <style>
+        .avatar img {
+            -webkit-border-radius: 10000px;
+            -moz-border-radius: 10000px;
+            border-radius: 10000px;
+        }
+    </style>
+
     <template>
 
         <!-- menu bar -->
@@ -22,31 +30,18 @@
 
             <paper-item on-click="goConversation">
                 <div class="avatar green" item-icon>
-                    <img src="http://www.iconsfind.com/wp-content/uploads/2015/08/20150831_55e46aeb19862-210x210.png"
+                    <img src="{{item.image}}"
                          alt=""
                          style="height:54px;padding:10px;"/>
                 </div>
                 <paper-item-body two-line class="layout vertical">
                     <div>{{ item.name }}</div>
-                    <div secondary>Nothing for the moment</div>
+                    <div secondary><span>{{item.place}}</span>, <span>{{item.date}}</span></div>
                 </paper-item-body>
-                <div><paper-badge label="3"></paper-badge></div>
+                <div><paper-badge label="{{ item.notif }}"></paper-badge></div>
             </paper-item>
 
         </template>
-
-        <template is="dom-if" if="{{isEmpty}}">
-            No one of your contacts use the app !
-        </template>
-
-        <!-- Ajax call for login / signin -->
-        <iron-ajax
-                id="ajax"
-                url=""
-                body=""
-                method="POST"
-                handle-as="json"
-                on-response="_handleResponse"></iron-ajax>
 
     </template>
 
@@ -62,59 +57,12 @@
         properties: {
             conversations: {
                 type: Array,
-                value: UserStore.getConversations()
-            },
-            isEmpty: {
-                type: Boolean,
-                value: UserStore.getConversations().length == 0
-            }
-        },
-
-        attached: function () {
-            var self = this;
-            this.id = Dispatcher.register('INITIALISATION_DONE', {
-                receive: function () {
-                    self.$.ajax.url = 'http://localhost:7070/' + ( localStorage.getItem('isSignedIn') ? 'login' : 'signin' );
-                    self.$.ajax.headers = {
-                        'Content-Type': 'application/json'
-                    };
-                    self.$.ajax.body = {
-                        phone_number: UserStore.getSim().phoneNumber,
-                        contacts: UserStore.getContacts().map(function (contact) {
-                            return contact.phoneNumber;
-                        })
-                    };
-                    self.$.ajax.generateRequest();
-                }
-            });
-
-            // init only the first time we come
-            if (UserStore.init()) {
-                this.set('conversations', UserStore.getConversations());
-                this.set('isEmpty', UserStore.getConversations().length == 0);
-            }
-        },
-
-        detached: function () {
-            Dispatcher.destroy({id:this.id});
-        },
-
-        /**
-         * Response from the signin / login
-         * @param request
-         * @private
-         */
-        _handleResponse: function (request) {
-            if (request.detail.response.status == 'success') {
-                if ( !localStorage.getItem('isSignedIn') ) localStorage.setItem('isSignedIn', true);
-                UserStore.matchConversationWithName(request.detail.response.data.conversations);
-                this.set('conversations', UserStore.getConversations());
-                this.set('isEmpty', UserStore.getConversations().length == 0);
+                value: talks
             }
         },
 
         goConversation: function (item) {
-            document.querySelector('app-router').go('/conversation/' + item.model.item._id);
+            document.querySelector('app-router').go('/conversation/' + item.model.item.id);
         }
 
     });
