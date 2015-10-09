@@ -120,11 +120,14 @@
             background-color: #263238;
             width : 12%;
         }
-        side-thumbnail  img{
-            max-width: calc(100% - 6px);
-            padding : 3px 3px 0px 3px;
-        }
 
+        side_thumbnail .img_container, side_thumbnail img{
+            width: calc(100% - 6px);
+            height : 50px;
+            padding : 3px 3px 0px 3px;
+            background-position: center center;
+            background-repeat: no-repeat;
+        }
     </style>
 
     <template>
@@ -137,9 +140,8 @@
 
         <side-thumbnail>
             <!-- Display all messages -->
-            <template is="dom-repeat" items="{{ messages }}">
-                    <div>
-                        <img src="{{ item.image_url }}" alt=""/>
+            <template is="dom-repeat" items="{{ messages }}" >
+                    <div class="img_container" backgroundImage="url({{ item.image_url }})" >
                     </div>
             </template>
         </side-thumbnail>
