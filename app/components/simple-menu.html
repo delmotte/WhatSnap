@@ -1,0 +1,32 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-menu-behavior/iron-menu-behavior.html">
+
+<dom-module id="simple-menu">
+
+    <style>
+        .content ::content > .iron-selected {
+            color: white;
+            background-color: grey;
+        }
+    </style>
+
+    <template>
+
+        <div class="content">
+            <content></content>
+        </div>
+
+    </template>
+
+</dom-module>
+
+<script>
+    (function() {
+        Polymer({
+            is: 'simple-menu',
+            behaviors: [
+                Polymer.IronMenuBehavior
+            ]
+        });
+    })();
+</script>
