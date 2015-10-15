@@ -25,6 +25,106 @@ var talks = [{
         sendAt: 'coucou',
         sendFrom: 'laule',
         image_url: '../back-end/img/ourson.jpg'
+    },{
+        sendBy: 'left',
+        sendAt: 'coucou',
+        sendFrom: 'laule',
+        image_url: '../back-end/img/ourson.jpg'
+    },{
+        sendBy: 'left',
+        sendAt: 'coucou',
+        sendFrom: 'laule',
+        image_url: 'http://soocurious.com/fr/wp-content/uploads/2014/03/des-ours-aux-comportements-humains1.jpg'
+    },{
+        sendBy: 'left',
+        sendAt: 'coucou',
+        sendFrom: 'laule',
+        image_url: '../back-end/img/ourson.jpg'
+    },{
+        sendBy: 'left',
+        sendAt: 'coucou',
+        sendFrom: 'laule',
+        image_url: 'http://soocurious.com/fr/wp-content/uploads/2014/03/des-ours-aux-comportements-humains1.jpg'
+    },{
+        sendBy: 'left',
+        sendAt: 'coucou',
+        sendFrom: 'laule',
+        image_url: '../back-end/img/ourson.jpg'
+    },{
+        sendBy: 'left',
+        sendAt: 'coucou',
+        sendFrom: 'laule',
+        image_url: 'http://soocurious.com/fr/wp-content/uploads/2014/03/des-ours-aux-comportements-humains1.jpg'
+    },{
+        sendBy: 'left',
+        sendAt: 'coucou',
+        sendFrom: 'laule',
+        image_url: '../back-end/img/ourson.jpg'
+    },{
+        sendBy: 'left',
+        sendAt: 'coucou',
+        sendFrom: 'laule',
+        image_url: 'http://soocurious.com/fr/wp-content/uploads/2014/03/des-ours-aux-comportements-humains1.jpg'
+    },{
+        sendBy: 'left',
+        sendAt: 'coucou',
+        sendFrom: 'laule',
+        image_url: '../back-end/img/ourson.jpg'
+    },{
+        sendBy: 'left',
+        sendAt: 'coucou',
+        sendFrom: 'laule',
+        image_url: 'http://soocurious.com/fr/wp-content/uploads/2014/03/des-ours-aux-comportements-humains1.jpg'
+    },{
+        sendBy: 'left',
+        sendAt: 'coucou',
+        sendFrom: 'laule',
+        image_url: '../back-end/img/ourson.jpg'
+    },{
+        sendBy: 'left',
+        sendAt: 'coucou',
+        sendFrom: 'laule',
+        image_url: 'http://soocurious.com/fr/wp-content/uploads/2014/03/des-ours-aux-comportements-humains1.jpg'
+    },{
+        sendBy: 'left',
+        sendAt: 'coucou',
+        sendFrom: 'laule',
+        image_url: '../back-end/img/ourson.jpg'
+    },{
+        sendBy: 'left',
+        sendAt: 'coucou',
+        sendFrom: 'laule',
+        image_url: 'http://soocurious.com/fr/wp-content/uploads/2014/03/des-ours-aux-comportements-humains1.jpg'
+    },{
+        sendBy: 'left',
+        sendAt: 'coucou',
+        sendFrom: 'laule',
+        image_url: '../back-end/img/ourson.jpg'
+    },{
+        sendBy: 'left',
+        sendAt: 'coucou',
+        sendFrom: 'laule',
+        image_url: 'http://soocurious.com/fr/wp-content/uploads/2014/03/des-ours-aux-comportements-humains1.jpg'
+    },{
+        sendBy: 'left',
+        sendAt: 'coucou',
+        sendFrom: 'laule',
+        image_url: '../back-end/img/ourson.jpg'
+    },{
+        sendBy: 'left',
+        sendAt: 'coucou',
+        sendFrom: 'laule',
+        image_url: 'http://soocurious.com/fr/wp-content/uploads/2014/03/des-ours-aux-comportements-humains1.jpg'
+    },{
+        sendBy: 'left',
+        sendAt: 'coucou',
+        sendFrom: 'laule',
+        image_url: '../back-end/img/ourson.jpg'
+    },{
+        sendBy: 'left',
+        sendAt: 'coucou',
+        sendFrom: 'laule',
+        image_url: 'http://soocurious.com/fr/wp-content/uploads/2014/03/des-ours-aux-comportements-humains1.jpg'
     }]
 }, {
     id:2,
