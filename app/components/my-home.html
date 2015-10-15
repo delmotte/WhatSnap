@@ -56,6 +56,12 @@
                 filter:progid:DXImageTransform.Microsoft.Shadow(color=#656565, Direction=180, Strength=10);
             }
         }
+        .talks-container {
+            -webkit-perspective: 500px;
+        }
+        .talks-container paper-item {
+            -webkit-animation-fill-mode: forwards;
+        }
     </style>
 
     <template>
@@ -113,10 +119,24 @@
 
         attached: function () {
             window.addEventListener('resize', this._resize, true);
+            this._onAccelerometer();
+        },
+
+        _onAccelerometer: function (){
+            var self = this;
+            if (navigator.accelerometer) {
+                navigator.accelerometer.getCurrentAcceleration(function success(acceleration) {
+                    self._rotateY(acceleration.x);
+                    self._onAccelerometer();
+                }, function error() {
+                    console.log('error');
+                });
+            }
         },
 
         detached: function () {
             window.removeEventListener('resize', this._resize, true);
+            if (navigator.accelerometer) navigator.accelerometer.clearWatch();
         },
 
         goConversation: function (item) {
@@ -129,8 +149,15 @@
         downAction: function(e) {
             this.$.ripple.downAction({x: e.x, y: e.y});
         },
-        upAction: function(e) {
+        upAction: function() {
             this.$.ripple.upAction();
+        },
+
+        _rotateY: function (deg) {
+            var paperItems = document.querySelectorAll('.talks-container paper-item');
+            for (var i in paperItems) {
+                paperItems[i].style['-webkit-transform'] = 'rotateY(' + (deg*4) + 'deg)';
+            }
         }
 
     });

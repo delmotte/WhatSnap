@@ -6,10 +6,66 @@
 <link rel="import" href="../bower_components/paper-item/paper-item.html"/>
 <link rel="import" href="../bower_components/paper-badge/paper-badge.html"/>
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html"/>
+<link rel="import" href="side-thumbnail.html">
+<link rel="import" href="../bower_components/paper-ripple/paper-ripple.html"/>
 
 <dom-module id="my-home">
 
+    <style>
+        .avatar img {
+            -webkit-border-radius: 10000px;
+            -moz-border-radius: 10000px;
+            border-radius: 10000px;
+        }
+
+        .grid-item {
+            float:left;
+            position:relative;
+            outline:0px!important;
+            background-color:rgba(255,255,255,0.7)
+        }
+
+        @media (max-width: 600px) {
+            .grid-item {
+                width: calc(100% - 30px);
+                border-bottom:1px lightgrey solid;
+            }
+        }
+        @media (min-width: 600px) and (max-width: 800px) {
+            .grid-item {
+                width: calc(50% - 52px);
+            }
+        }
+        @media (min-width: 800px) and (max-width: 1000px) {
+            .grid-item {
+                width: calc(33% - 52px);
+            }
+        }
+        @media (min-width:1000px) {
+            .grid-item {
+                width: calc(25% - 52px);
+            }
+        }
+        @media (min-width: 600px) {
+            .grid-item {
+                margin:10px;
+                -moz-box-shadow: 0px 3px 10px 0px #656565;
+                -webkit-box-shadow: 0px 3px 10px 0px #656565;
+                -o-box-shadow: 0px 3px 10px 0px #656565;
+                box-shadow: 0px 3px 10px 0px #656565;
+                filter:progid:DXImageTransform.Microsoft.Shadow(color=#656565, Direction=180, Strength=10);
+            }
+        }
+        .talks-container {
+            -webkit-perspective: 500px;
+        }
+        .talks-container paper-item {
+            -webkit-animation-fill-mode: forwards;
+        }
+    </style>
+
     <template>
+
 
         <!-- menu bar -->
         <paper-toolbar>
@@ -18,35 +74,28 @@
         </paper-toolbar>
 
         <!-- Display all conversations -->
-        <template is="dom-repeat" items="{{ conversations }}">
+        <div class="talks-container">
+            <template is="dom-repeat" items="{{ conversations }}">
 
-            <paper-item on-click="goConversation">
-                <div class="avatar green" item-icon>
-                    <img src="http://www.iconsfind.com/wp-content/uploads/2015/08/20150831_55e46aeb19862-210x210.png"
-                         alt=""
-                         style="height:54px;padding:10px;"/>
-                </div>
-                <paper-item-body two-line class="layout vertical">
-                    <div>{{ item.name }}</div>
-                    <div secondary>Nothing for the moment</div>
-                </paper-item-body>
-                <div><paper-badge label="3"></paper-badge></div>
-            </paper-item>
+                <paper-item on-click="goConversation" class="grid-item">
+                    <div class="avatar green" item-icon>
+                        <img src="{{item.image}}"
+                             alt=""
+                             style="height:54px;padding:10px;"/>
+                    </div>
+                    <paper-item-body two-line class="layout vertical">
+                        <div>{{ item.name }}</div>
+                        <div secondary><span>{{item.place}}</span>, <span>{{item.date}}</span></div>
+                    </paper-item-body>
+                    <div><paper-badge label="{{ item.notif }}"></paper-badge></div>
+                    <paper-ripple fit id="ripple" style="pointer-events: none;"></paper-ripple>
 
-        </template>
+                </paper-item>
 
-        <template is="dom-if" if="{{isEmpty}}">
-            No one of your contacts use the app !
-        </template>
+            </template>
+        </div>
 
-        <!-- Ajax call for login / signin -->
-        <iron-ajax
-                id="ajax"
-                url=""
-                body=""
-                method="POST"
-                handle-as="json"
-                on-response="_handleResponse"></iron-ajax>
+
 
     </template>
 
@@ -59,62 +108,56 @@
         /**
          * Data initialization
          */
+
         properties: {
             conversations: {
                 type: Array,
-                value: UserStore.getConversations()
+                value: talks
             },
-            isEmpty: {
-                type: Boolean,
-                value: UserStore.getConversations().length == 0
-            }
+
         },
 
         attached: function () {
-            var self = this;
-            this.id = Dispatcher.register('INITIALISATION_DONE', {
-                receive: function () {
-                    self.$.ajax.url = 'http://134.59.214.62:7070/' + ( localStorage.getItem('isSignedIn') ? 'login' : 'signin' );
-                    self.$.ajax.headers = {
-                        'Content-Type': 'application/json'
-                    };
-                    self.$.ajax.body = {
-                        phone_number: UserStore.getSim().phoneNumber,
-                        contacts: UserStore.getContacts().map(function (contact) {
-                            return contact.phoneNumber;
-                        })
-                    };
-                    self.$.ajax.generateRequest();
-                }
-            });
+            window.addEventListener('resize', this._resize, true);
+            this._onAccelerometer();
+        },
 
-            // init only the first time we come
-            if (UserStore.init()) {
-                this.set('conversations', UserStore.getConversations());
-                this.set('isEmpty', UserStore.getConversations().length == 0);
+        _onAccelerometer: function (){
+            var self = this;
+            if (navigator.accelerometer) {
+                navigator.accelerometer.getCurrentAcceleration(function success(acceleration) {
+                    self._rotateY(acceleration.x);
+                    self._onAccelerometer();
+                }, function error() {
+                    console.log('error');
+                });
             }
         },
 
         detached: function () {
-            Dispatcher.destroy({id:this.id});
-        },
-
-        /**
-         * Response from the signin / login
-         * @param request
-         * @private
-         */
-        _handleResponse: function (request) {
-            if (request.detail.response.status == 'success') {
-                if ( !localStorage.getItem('isSignedIn') ) localStorage.setItem('isSignedIn', true);
-                UserStore.matchConversationWithName(request.detail.response.data.conversations);
-                this.set('conversations', UserStore.getConversations());
-                this.set('isEmpty', UserStore.getConversations().length == 0);
-            }
+            window.removeEventListener('resize', this._resize, true);
+            if (navigator.accelerometer) navigator.accelerometer.clearWatch();
         },
 
         goConversation: function (item) {
-            document.querySelector('app-router').go('/conversation/' + item.model.item._id);
+            document.querySelector('app-router').go('/conversation/' + item.model.item.id);
+        },
+
+        _resize: function (e) {
+            console.log(window.innerWidth);
+        },
+        downAction: function(e) {
+            this.$.ripple.downAction({x: e.x, y: e.y});
+        },
+        upAction: function() {
+            this.$.ripple.upAction();
+        },
+
+        _rotateY: function (deg) {
+            var paperItems = document.querySelectorAll('.talks-container paper-item');
+            for (var i in paperItems) {
+                paperItems[i].style['-webkit-transform'] = 'rotateY(' + (deg*4) + 'deg)';
+            }
         }
 
     });

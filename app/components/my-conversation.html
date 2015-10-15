@@ -62,11 +62,17 @@
             height: 60px;
             padding : 3px 3px 0px 3px;
         }
+
+        @media (max-width: 639px) {
+            .image-container {
+                top:56px!important;
+            }
+        }
         .image-container {
-            padding-top: 64px;
+            top: 64px;
+            bottom:0px;
             left: 12%;
             width:88%;
-            height: 100%;
             position: absolute;
             display:block;
             background-color: black;
@@ -102,7 +108,7 @@
         }
 
         @media screen and (orientation: landscape) {
-            .image-container > img:empty { max-height: 90%; }
+            .image-container > img:empty { max-height: 100%; }
         }
 
     </style>

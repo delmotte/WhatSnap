@@ -3,84 +3,19 @@
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html"/>
 <link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html"/>
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html"/>
+<link rel="import" href="side-thumbnail.html"/>
 
 <dom-module id="my-conversation" attributes="conversationId">
     <style>
-        .container {
-            margin-top:20px;
-            padding-left:20px;
-            padding-right:20px;
-            text-align:right;
-        }
-
-        .container > .bubble-left {
-            position:relative;
-            top:6px;
-            margin-left:75px;
-            width: calc(100% - 100px);
-            padding: 10px;
-            background: #DDDDDD;
-            -webkit-border-radius: 10px;
-            -moz-border-radius: 10px;
-            border-radius: 10px;
-        }
-
-        .container > .bubble-right {
-            position:relative;
-            top:6px;
-            margin:auto;
-            right:0px;
-            margin-right:75px;
-            width: calc(100% - 100px);
-            padding: 10px;
-            background: #DDDDDD;
-            -webkit-border-radius: 10px;
-            -moz-border-radius: 10px;
-            border-radius: 10px;
-        }
-
-        .container > .bubble-left img, .container > .bubble-right img {
-            width:100%;
-            height:auto;
-            display:block;
-            margin-bottom:10px;
-        }
-
-        .container >  .bubble-left:after {
-            content: '';
-            position: absolute;
-            border-style: solid;
-            border-width: 7px 21px 7px 0;
-            border-color: transparent #DDDDDD;
-            display: block;
-            width: 0;
-            z-index: 1;
-            left: -21px;
-            top: 14px;
-        }
-
-        .container > .bubble-right:after {
-            content: '';
-            position: absolute;
-            border-style: solid;
-            border-width: 7px 0px 7px 21px;
-            border-color: transparent #DDDDDD;
-            display: block;
-            width: 0;
-            z-index: 1;
-            right: -21px;
-            top: 14px;
-        }
-
-        .messages-container {
-            padding-bottom:100px;
-            padding-top:64px;
-        }
 
         @media (max-width: 639px) {
-            .messages-container {
-                padding-top:56px;
+            side-thumbnail{
+                top: 56px !important;
             }
+            .image-container {
+                padding-top: 56px!important;
+            }
+
         }
 
         paper-toolbar {
@@ -95,15 +30,79 @@
             bottom:0px;
             display:block;
             width:100%;
-            text-align:center;
+            text-align:right;
+
         }
 
         .add-photo paper-fab {
             top:-12px;
+            right:12px;
         }
 
-        img.bubble-right {
-            float:right!important;
+        side-thumbnail{
+            position: fixed;
+            left: 0;
+            top: 64px;
+            z-index: 1000;
+            height: 100%;
+            background-color: #263238;
+            width : 12%;
+        }
+
+        .img_container{
+           /* width: calc(100% - 6px);*/
+            height : 100%;
+
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-size: cover !important;
+        }
+
+        .imageContainer{
+            height: 60px;
+            padding : 3px 3px 0px 3px;
+        }
+
+        @media (max-width: 639px) {
+            .image-container {
+                top:56px!important;
+            }
+        }
+        .image-container {
+            top: 64px;
+            bottom:0px;
+            left: 12%;
+            width:88%;
+            position: absolute;
+            display:block;
+            background-color: black;
+        }
+
+        .image-container > img {
+            position: absolute;
+            max-width: 100%;
+            top: 10%;
+            left: 10%;
+            border-radius: 3px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.9);
+        }
+
+        .image-container > img:empty {
+            top: 50%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -moz-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            -o-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+
+        @media screen and (orientation: portrait) {
+            .image-container > img:empty { max-width: 100%; }
+        }
+
+        @media screen and (orientation: landscape) {
+            .image-container > img:empty { max-height: 100%; }
         }
 
     </style>
@@ -116,33 +115,27 @@
             <div class="title">{{ userName }}</div>
         </paper-toolbar>
 
-        <!-- message container -->
-        <div class="messages-container" id="messages">
-
+        <side-thumbnail>
             <!-- Display all messages -->
-            <template is="dom-repeat" items="{{ messages }}">
-
-                <div class="container">
-                    <div class="contact-img">
-                        <img  class$="{{leftOrRight(item)}}"
-                                src="http://www.iconsfind.com/wp-content/uploads/2015/08/20150831_55e46aeb19862-210x210.png"
-                             alt=""
-                             style="height:54px;position:relative;float:left;"/>
-                    </div>
-
-                    <div class$="{{leftOrRight(item)}}">
-                        <img src="{{ item.image_url }}" alt=""/>
-                        <div>{{ displayFromAndAt(item) }}</div>
+            <template is="dom-repeat" items="{{ messages }}" >
+                <div class="imageContainer">
+                    <div class$="{{buildClass(item.image_url)}}" >
                     </div>
                 </div>
-
             </template>
+        </side-thumbnail>
 
+
+
+        <!-- image container -->
+        <div class="image-container" id="messages">
+                <img src="http://soocurious.com/fr/wp-content/uploads/2014/03/des-ours-aux-comportements-humains1.jpg" alt=""/>
         </div>
 
         <!-- add photo from camera -->
         <div class="add-photo">
-            <paper-fab icon="camera-enhance"></paper-fab>
+            <input type="file" id="upload_input" accept="image/*" style="display:none"/>
+            <paper-fab id="upload_btn" icon="camera-enhance" on-click="_sendPicture"></paper-fab>
         </div>
 
     </template>
@@ -156,24 +149,7 @@
         properties: {
             messages: {
                 type: Array,
-                value: function () {
-                    return [{
-                        sendBy: '+33786625527',
-                        sendAt: 'coucou',
-                        sendFrom: 'laule',
-                        image_url: 'http://soocurious.com/fr/wp-content/uploads/2014/03/des-ours-aux-comportements-humains1.jpg'
-                    },{
-                        sendBy: '+33786625527',
-                        sendAt: 'coucou',
-                        sendFrom: 'laule',
-                        image_url: 'http://soocurious.com/fr/wp-content/uploads/2014/03/des-ours-aux-comportements-humains1.jpg'
-                    },{
-                        sendBy: '+33678469859',
-                        sendAt: 'coucou',
-                        sendFrom: 'laule',
-                        image_url: 'http://soocurious.com/fr/wp-content/uploads/2014/03/des-ours-aux-comportements-humains1.jpg'
-                    }];
-                }
+                value: []
             },
             isEmpty: {
                 type: Boolean,
@@ -185,7 +161,7 @@
             },
             userName: {
                 type:String,
-                value: 'noone'
+                value: 'Contact Name'
             }
         },
 
@@ -193,7 +169,15 @@
             document.querySelector('app-router').go('/home');
         },
 
-        ready: function () {
+        attached: function () {
+            for (var i in talks) {
+                if (talks[i].id == this.conversationId) {
+                    this.set('userName', talks[i].name);
+                    this.set('messages', talks[i].messages);
+                    break;
+                }
+            }
+
             var self = this;
             /**
              * When all the images finished to load, scroll to the bottom of the conversation
@@ -215,31 +199,38 @@
 
         },
 
-        attached: function () {
-            if (!UserStore.getSim()) {
-                document.querySelector('app-router').go('/');
-            }
-            var conversation = UserStore.enterConversation(this.conversationId);
-            this.set('userName', conversation.name);
-            //this.set('messages', conversation.messages);
-            var self = this;
-            this.id = Dispatcher.register('NEW_MESSAGE', {
-                receive: function (conversation) {
-                    self.set('messages', conversation.messages);
-                }
-            });
-        },
-
         detached: function () {
-            Dispatcher.destroy({id:this.id});
         },
 
         leftOrRight: function (item, boolean) {
-            return (boolean ? 'img-' : '') + (item.sendBy == UserStore.getSim().phoneNumber ? 'bubble-right' : 'bubble-left');
+            return (boolean ? 'img-' : '') + (item.sendBy == 'right' ? 'bubble-right' : 'bubble-left');
         },
 
         displayFromAndAt: function (item) {
             return item.sendAt + ', ' + item.sendFrom;
+        },
+
+        _sendPicture: function () {
+            document.querySelector('#upload_input').dispatchEvent(new Event('click'));
+        },
+
+        buildClass: function (image_url) {
+            return 'img_container img-unique ' + image_url ;
+        },
+
+        ready: function () {
+            var self = this;
+            setTimeout(function () {
+                var imgs = document.querySelectorAll('.img-unique');
+                for (var i = 0; i < imgs.length; i++) {
+                    self.modify(imgs[i]);
+                }
+            });
+
+        },
+
+        modify: function (image) {
+            image.style.background = 'url(' + (''+image.className).split(' ')[2] + ')';
         }
 
     });
