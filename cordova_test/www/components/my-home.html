@@ -77,7 +77,7 @@
         <div class="talks-container">
             <template is="dom-repeat" items="{{ conversations }}">
 
-                <paper-item on-click="goConversation" class="grid-item">
+                <paper-item on-up="goConversation" class="grid-item">
                     <div class="avatar green" item-icon>
                         <img src="{{item.image}}"
                              alt=""
@@ -156,7 +156,7 @@
         _rotateY: function (deg) {
             var paperItems = document.querySelectorAll('.talks-container paper-item');
             for (var i in paperItems) {
-                paperItems[i].style['-webkit-transform'] = 'rotateY(' + (deg*4) + 'deg)';
+                paperItems[i].style['-webkit-transform'] = 'rotate3d(0, 1, 0, ' + (deg*2) + 'deg)';
             }
         }
 
