@@ -20,3 +20,13 @@ you first need to start mongodb using : mongod
 
 cd back-end
 node index.js
+
+
+
+### Comment avez vous réalisé l’exemple ?
+
+### Avec quel outil de développement, de tests ?
+
+### Comment déploie-t-on et exécute-t-on l'exemple ?
+
+### Comment teste-t-on les capacités d’adaptations ?
