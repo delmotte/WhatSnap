@@ -10,9 +10,8 @@ Back-End : NodeJS, MongoDB, Socket.io
 ## commands to build the cordova project
 
 cordova platform add android
-cordova plugin add com.pbakondy.sim
-cordova plugin add https://github.com/dbaq/cordova-plugin-contacts-phone-numbers.git
 cordova plugin add cordova-plugin-whitelist
+cordova plugin add cordova-plugin-device-motion
 
 ## commands to run the server
 
