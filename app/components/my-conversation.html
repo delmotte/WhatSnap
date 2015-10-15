@@ -124,7 +124,7 @@
             <!-- Display all messages -->
             <template is="dom-repeat" items="{{ messages }}" >
                 <div class="imageContainer">
-                    <div class$="{{buildClass(item.image_url)}}" onclick="changeMainPicture(this)" >
+                    <div class$="{{buildClass(item.image_url)}}" onmousedown="changeMainPicture(this)" ontouchstart="changeMainPicture(this)" >
                     </div>
                 </div>
             </template>
