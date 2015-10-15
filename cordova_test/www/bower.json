@@ -20,6 +20,9 @@
     "paper-item": "PolymerElements/paper-item#~1.0.3",
     "paper-badge": "PolymerElements/paper-badge#~1.0.3",
     "iron-ajax": "PolymerElements/iron-ajax#~1.0.5",
-    "paper-fab": "PolymerElements/paper-fab#~1.0.4"
+    "paper-fab": "PolymerElements/paper-fab#~1.0.4",
+    "paper-menu": "PolymerElements/paper-menu#~1.1.1",
+    "iron-menu-behavior": "PolymerElements/iron-menu-behavior#~1.0.5",
+    "paper-ripple": "PolymerElements/paper-ripple#~1.0.3"
   }
 }
