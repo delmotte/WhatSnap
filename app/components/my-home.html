@@ -57,10 +57,10 @@
             }
         }
         .talks-container {
-            perspective: 500px;
+            -webkit-perspective: 500px;
         }
         .talks-container paper-item {
-            transform: rotateY(0deg);
+            -webkit-animation-fill-mode: forwards;
         }
     </style>
 
@@ -119,20 +119,23 @@
 
         attached: function () {
             window.addEventListener('resize', this._resize, true);
-            window.addEventListener('deviceready', this._onAccelerometer, true);
+            this._onAccelerometer();
         },
 
         _onAccelerometer: function (){
-            navigator.accelerometer.watchAcceleration(function success(acceleration) {
-                console.log(acceleration.x);
-            }, function error() {
-                console.log('error');
-            }, {period: 100});
+            var self = this;
+            if (navigator.accelerometer) {
+                navigator.accelerometer.getCurrentAcceleration(function success(acceleration) {
+                    self._rotateY(acceleration.x);
+                    self._onAccelerometer();
+                }, function error() {
+                    console.log('error');
+                });
+            }
         },
 
         detached: function () {
             window.removeEventListener('resize', this._resize, true);
-            window.removeEventListener('deviceready', this._onAccelerometer, true);
             if (navigator.accelerometer) navigator.accelerometer.clearWatch();
         },
 
@@ -146,15 +149,15 @@
         downAction: function(e) {
             this.$.ripple.downAction({x: e.x, y: e.y});
         },
-        upAction: function(e) {
+        upAction: function() {
             this.$.ripple.upAction();
         },
 
         _rotateY: function (deg) {
             var paperItems = document.querySelectorAll('.talks-container paper-item');
             for (var i in paperItems) {
-                paperItems[i].style.transform = 'rotateY(' + deg + 'deg)';
-            };
+                paperItems[i].style['-webkit-transform'] = 'rotateY(' + (deg*4) + 'deg)';
+            }
         }
 
     });
