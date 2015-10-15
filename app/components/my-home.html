@@ -77,7 +77,7 @@
         <div class="talks-container">
             <template is="dom-repeat" items="{{ conversations }}">
 
-                <paper-item on-click="goConversation" class="grid-item">
+                <paper-item on-up="goConversation" class="grid-item">
                     <div class="avatar green" item-icon>
                         <img src="{{item.image}}"
                              alt=""
