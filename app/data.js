@@ -29,7 +29,7 @@ var talks = [{
         sendBy: 'left',
         sendAt: 'coucou',
         sendFrom: 'laule',
-        image_url: 'img/ourson.jpg'
+        image_url: 'img/ourson-haut.jpg'
     },{
         sendBy: 'left',
         sendAt: 'coucou',

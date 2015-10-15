@@ -202,10 +202,14 @@
                 }
 
             });
-
+            window.addEventListener("resize", updateWidthSlider, true);
+            setTimeout(updateWidthSlider, 100);
         },
 
+
+
         detached: function () {
+            window.removeEventListener("resize", updateWidthSlider, true);
         },
 
         leftOrRight: function (item, boolean) {
@@ -246,4 +250,14 @@
        //console.log(urli.style.background);
        document.getElementById("messages").children[0].setAttribute("src",urli.style.background.split('(')[1].split(')')[0]);
     }
+    function updateWidthSlider(){
+        var newHeight =window.getComputedStyle(document.querySelector(".imageContainer"), null).getPropertyValue("width");
+        var imgs = document.querySelectorAll(".imageContainer");
+        for (var i in imgs) {
+            try {
+                imgs[i].style.height = newHeight;
+            } catch (e) {}
+        }
+    }
+
 </script>
