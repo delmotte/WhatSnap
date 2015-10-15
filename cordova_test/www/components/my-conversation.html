@@ -47,13 +47,14 @@
             height: 100%;
             background-color: #263238;
             width : 12%;
+            overflow: auto;
         }
 
         .img_container{
            /* width: calc(100% - 6px);*/
             height : 100%;
 
-            background-position: center center;
+            background-position: center center !important;
             background-repeat: no-repeat;
             background-size: cover !important;
         }
@@ -96,7 +97,10 @@
             -o-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%);
         }
-
+        side-thumbnail::-webkit-scrollbar {
+            display: none;
+        }
+        
         @media screen and (orientation: portrait) {
             .image-container > img:empty { max-width: 100%; }
         }
@@ -116,10 +120,11 @@
         </paper-toolbar>
 
         <side-thumbnail>
+
             <!-- Display all messages -->
             <template is="dom-repeat" items="{{ messages }}" >
                 <div class="imageContainer">
-                    <div class$="{{buildClass(item.image_url)}}" >
+                    <div class$="{{buildClass(item.image_url)}}" onclick="changeMainPicture(this)" >
                     </div>
                 </div>
             </template>
@@ -233,5 +238,11 @@
             image.style.background = 'url(' + (''+image.className).split(' ')[2] + ')';
         }
 
+
     });
+   function  changeMainPicture(urli){
+        //Change the img src attribute inside the messages div
+       //console.log(urli.style.background);
+       document.getElementById("messages").children[0].setAttribute("src",urli.style.background.split('(')[1].split(')')[0]);
+    }
 </script>
