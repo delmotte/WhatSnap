@@ -207,7 +207,15 @@
             setTimeout(function(){
                 if(self.messages.length >0){
                     $('#messages').iviewer({src: self.messages[0].image_url, ui_disabled: true});
-                    //changeMainPictureWithDirectURL(self.messages[0].image_url);
+                    (new Hammer(document.querySelector('#messages'), {transform_always_block: true, taps:2})).on('doubletap', function () {
+                        if (self.tapCounter == false) {
+                            $('#messages').iviewer('zoom_by', 1.5);
+                            self.set('tapCounter', true);
+                        } else {
+                            $('#messages').iviewer('fit');
+                            self.set('tapCounter', false);
+                        }
+                    });
                     //encadrer en rouge la premiere image du side slider
                     encadrerImageSlider(0);
                 }

@@ -118,7 +118,6 @@
         },
 
         attached: function () {
-            window.addEventListener('resize', this._resize, true);
             this._onAccelerometer();
         },
 
@@ -135,7 +134,6 @@
         },
 
         detached: function () {
-            window.removeEventListener('resize', this._resize, true);
             if (navigator.accelerometer) navigator.accelerometer.clearWatch();
         },
 
@@ -143,9 +141,6 @@
             document.querySelector('app-router').go('/conversation/' + item.model.item.id);
         },
 
-        _resize: function (e) {
-            console.log(window.innerWidth);
-        },
         downAction: function(e) {
             this.$.ripple.downAction({x: e.x, y: e.y});
         },
@@ -156,7 +151,7 @@
         _rotateY: function (deg) {
             var paperItems = document.querySelectorAll('.talks-container paper-item');
             for (var i in paperItems) {
-                paperItems[i].style['-webkit-transform'] = 'rotate3d(0, 1, 0, ' + (deg*2) + 'deg)';
+                paperItems[i].style['-webkit-transform'] = 'rotate3d(0, 1, 0, ' + (deg*4) + 'deg)';
             }
         }
 
