@@ -23,6 +23,7 @@
     "paper-fab": "PolymerElements/paper-fab#~1.0.4",
     "paper-menu": "PolymerElements/paper-menu#~1.1.1",
     "iron-menu-behavior": "PolymerElements/iron-menu-behavior#~1.0.5",
-    "paper-ripple": "PolymerElements/paper-ripple#~1.0.3"
+    "paper-ripple": "PolymerElements/paper-ripple#~1.0.3",
+    "iviewer": "~0.7.11"
   }
 }
