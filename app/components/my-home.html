@@ -118,7 +118,6 @@
         },
 
         attached: function () {
-            window.addEventListener('resize', this._resize, true);
             this._onAccelerometer();
         },
 
@@ -135,7 +134,6 @@
         },
 
         detached: function () {
-            window.removeEventListener('resize', this._resize, true);
             if (navigator.accelerometer) navigator.accelerometer.clearWatch();
         },
 
@@ -143,9 +141,6 @@
             document.querySelector('app-router').go('/conversation/' + item.model.item.id);
         },
 
-        _resize: function (e) {
-            console.log(window.innerWidth);
-        },
         downAction: function(e) {
             this.$.ripple.downAction({x: e.x, y: e.y});
         },
