@@ -1,5 +1,5 @@
 /app/bower_components/
-/app/platforms
-/app/plugins
+/app/platforms/
+/app/plugins/
 .idea/
 .DS_STORE
