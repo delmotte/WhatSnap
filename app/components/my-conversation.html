@@ -61,7 +61,7 @@
 
         .imageContainer{
             height: 60px;
-            padding : 3px 3px 0px 3px;
+            margin : 3px 3px 0px 3px;
 
         }
 
@@ -124,8 +124,8 @@
 
             <!-- Display all messages -->
             <template is="dom-repeat" items="{{ messages }}" >
-                <div class="imageContainer">
-                    <div class$="{{buildClass(item.image_url)}}" onmousedown="changeMainPicture(this)" ontouchstart="changeMainPicture(this)" >
+                <div class="imageContainer"  >
+                    <div " class$="{{buildClass(item.image_url)}}" onmousedown="changeMainPicture(this)" ontouchstart="changeMainPicture(this)"  >
                     </div>
                 </div>
             </template>
@@ -208,7 +208,7 @@
                 if(self.messages.length >0){
                     changeMainPictureWithDirectURL(self.messages[0].image_url);
                     //encadrer en rouge la premiere image du side slider
-
+                    encadrerImageSlider(0);
                 }
                 updateWidthSlider();
 
@@ -256,6 +256,8 @@
 
     });
    function  changeMainPicture(urli){
+       console.log(urli);
+       console.log(urli.getAttribute("itemNumber"));
         //Change the img src attribute inside the messages div
        document.getElementById("messages").children[0].setAttribute("src",urli.style.background.split('(')[1].split(')')[0]);
     }
@@ -270,6 +272,9 @@
                 imgs[i].style.height = newHeight;
             } catch (e) {}
         }
+    }
+    function encadrerImageSlider(number){
+        document.querySelectorAll(".imageContainer")[number].style.border = "2px solid red";
     }
 
 </script>
