@@ -9,7 +9,7 @@ var talks = [{
         sendBy: 'right',
         sendAt: 'coucou',
         sendFrom: 'laule',
-        image_url: 'http://soocurious.com/fr/wp-content/uploads/2014/03/des-ours-aux-comportements-humains1.jpg'
+        image_url: 'img/ourson.jpg'
     },{
         sendBy: 'right',
         sendAt: 'coucou',
