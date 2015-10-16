@@ -25,7 +25,10 @@ node index.js
 ### Comment avez vous réalisé l’exemple ?
 
 ### Avec quel outil de développement, de tests ?
+Nous avons utilisé Webstorm 10
 
 ### Comment déploie-t-on et exécute-t-on l'exemple ?
 
 ### Comment teste-t-on les capacités d’adaptations ?
+
+
