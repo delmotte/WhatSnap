@@ -135,7 +135,7 @@
 
         <!-- image container -->
         <div class="image-container" id="messages">
-                <img src="http://soocurious.com/fr/wp-content/uploads/2014/03/des-ours-aux-comportements-humains1.jpg" alt=""/>
+                <img src="" alt=""/>
         </div>
 
         <!-- add photo from camera -->
@@ -203,7 +203,16 @@
 
             });
             window.addEventListener("resize", updateWidthSlider, true);
-            setTimeout(updateWidthSlider, 100);
+            var self = this;
+            setTimeout(function(){
+                if(self.messages.length >0){
+                    changeMainPictureWithDirectURL(self.messages[0].image_url);
+                    //encadrer en rouge la premiere image du side slider
+
+                }
+                updateWidthSlider();
+
+            }, 100);
 
         },
 
@@ -248,8 +257,10 @@
     });
    function  changeMainPicture(urli){
         //Change the img src attribute inside the messages div
-       //console.log(urli.style.background);
        document.getElementById("messages").children[0].setAttribute("src",urli.style.background.split('(')[1].split(')')[0]);
+    }
+    function changeMainPictureWithDirectURL(directURL){
+        document.getElementById("messages").children[0].setAttribute("src",directURL);
     }
     function updateWidthSlider(){
         var newHeight =window.getComputedStyle(document.querySelector(".imageContainer"), null).getPropertyValue("width");
