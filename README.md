@@ -1,8 +1,14 @@
 ### Comment avez vous réalisé l’exemple ?
 
+qu'est ce qui est important pour l'adaptation (techniquement)
+
   Nous avons combiné Polymer et Cordova afin de réaliser cet exemple. Polymer nous a servis pour réaliser les
   templates et les vues webs, alors que Cordova nous a permis d'exporter ce code web sur une plateforme mobile 
   et de bénéficier de certaines capacités natives de l'appareil.
+  
+  Pour Polymer :
+    il suffit d'aller sur leur page de documentation et quand on a trouvé un composant qui va nous servir on a juste à faire un bower install et à l'importer pour l'utiliser.
+    Grâce à Polymer nous avons pu facilement se rapprocher des standards du Material Design puisque les éléments graphiques de bases de Polymer implémente au mieux ces standards.
 
 
 ### Avec quel outil de développement, de tests ?
