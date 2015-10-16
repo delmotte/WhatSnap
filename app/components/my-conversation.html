@@ -135,7 +135,7 @@
 
         <!-- image container -->
         <div class="image-container" id="messages">
-                <img src="" alt=""/>
+
         </div>
 
         <!-- add photo from camera -->
@@ -206,12 +206,13 @@
             var self = this;
             setTimeout(function(){
                 if(self.messages.length >0){
-                    changeMainPictureWithDirectURL(self.messages[0].image_url);
+                    $('#messages').iviewer({src: self.messages[0].image_url, ui_disabled: true});
+                    //changeMainPictureWithDirectURL(self.messages[0].image_url);
                     //encadrer en rouge la premiere image du side slider
                     encadrerImageSlider(0);
                 }
                 updateWidthSlider();
-
+                //$('#messages').iviewer({src: 'img/ourson.jpg', ui_disabled: true});
             }, 100);
 
         },
@@ -260,9 +261,14 @@
         //Change the img src attribute inside the messages div
        document.getElementById("messages").children[0].setAttribute("src",urli.style.background.split('(')[1].split(')')[0]);
        encadrerImageSlider(urli.id);
-   }
+
+       $('#messages').iviewer('loadImage',  urli.style.background.split('(')[1].split(')')[0]);
+        //Change the img src attribute inside the messages div
+       //document.getElementById("messages").children[0].setAttribute("src",urli.style.background.split('(')[1].split(')')[0]);
+    }
+
     function changeMainPictureWithDirectURL(directURL){
-        document.getElementById("messages").children[0].setAttribute("src",directURL);
+        $('#messages').iviewer({src: directURL, ui_disabled: true});
     }
     function updateWidthSlider(){
         var newHeight =window.getComputedStyle(document.querySelector(".imageContainer"), null).getPropertyValue("width");
