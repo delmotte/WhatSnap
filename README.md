@@ -28,6 +28,10 @@
   
   bower install
   
+  cd ..
+  
+  cordova run android
+  
 
 ### Comment teste-t-on les capacités d’adaptations ?
 
