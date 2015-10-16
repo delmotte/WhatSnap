@@ -270,6 +270,7 @@
        document.getElementById("messages").children[0].setAttribute("src",urli.style.background.split('(')[1].split(')')[0]);
        encadrerImageSlider(urli.id);
 
+       self.set('tapCounter', false);
        $('#messages').iviewer('loadImage',  urli.style.background.split('(')[1].split(')')[0]);
         //Change the img src attribute inside the messages div
        //document.getElementById("messages").children[0].setAttribute("src",urli.style.background.split('(')[1].split(')')[0]);
