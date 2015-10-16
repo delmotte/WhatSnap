@@ -51,7 +51,7 @@
         }
 
         .img_container{
-           /* width: calc(100% - 6px);*/
+            /* width: calc(100% - 6px);*/
             height : 100%;
 
             background-position: center center !important;
@@ -101,7 +101,7 @@
         side-thumbnail::-webkit-scrollbar {
             display: none;
         }
-        
+
         @media screen and (orientation: portrait) {
             .image-container > img:empty { max-width: 100%; }
         }
@@ -132,11 +132,8 @@
         </side-thumbnail>
 
 
-
         <!-- image container -->
-        <div class="image-container" id="messages">
-
-        </div>
+        <div class="image-container" id="messages"></div>
 
         <!-- add photo from camera -->
         <div class="add-photo">
@@ -157,14 +154,6 @@
                 type: Array,
                 value: []
             },
-            isEmpty: {
-                type: Boolean,
-                value: true
-            },
-            loading: {
-                type:Boolean,
-                value: true
-            },
             userName: {
                 type:String,
                 value: 'Contact Name'
@@ -176,6 +165,8 @@
         },
 
         attached: function () {
+
+            // find the right conversation
             for (var i in talks) {
                 if (talks[i].id == this.conversationId) {
                     this.set('userName', talks[i].name);
@@ -184,43 +175,31 @@
                 }
             }
 
-            var self = this;
-            /**
-             * When all the images finished to load, scroll to the bottom of the conversation
-             */
-            this.async(function() {
-                var imgs = document.querySelectorAll('.bubble-right img, .bubble-left img');
-                var index = 0;
-                for (var i = 0; i < imgs.length; i++) {
-                    imgs[i].addEventListener('load', function () {
-                        index++;
-                        if (index == imgs.length) {
-                            self.set('loading', false);
-                            document.querySelector('body').scrollTop = document.querySelector('body').scrollHeight;
-                        }
-                    });
-                }
-
-            });
+            // add listener to resize the left side bar
             window.addEventListener("resize", updateWidthSlider, true);
+
             var self = this;
             setTimeout(function(){
+
                 if(self.messages.length >0){
+                    // init image center
                     $('#messages').iviewer({src: self.messages[0].image_url, ui_disabled: true});
+
+                    // listen double tap to zoom in / zoom out
                     (new Hammer(document.querySelector('#messages'), {transform_always_block: true, taps:2})).on('doubletap', function () {
-                        if (self.tapCounter == false) {
+                        if (tapCounter == false) {
                             $('#messages').iviewer('zoom_by', 1.5);
-                            self.set('tapCounter', true);
+                            tapCounter = true;
                         } else {
                             $('#messages').iviewer('fit');
-                            self.set('tapCounter', false);
+                            tapCounter = false;
                         }
                     });
+
                     //encadrer en rouge la premiere image du side slider
                     encadrerImageSlider(0);
                 }
                 updateWidthSlider();
-                //$('#messages').iviewer({src: 'img/ourson.jpg', ui_disabled: true});
             }, 100);
 
         },
@@ -229,14 +208,6 @@
 
         detached: function () {
             window.removeEventListener("resize", updateWidthSlider, true);
-        },
-
-        leftOrRight: function (item, boolean) {
-            return (boolean ? 'img-' : '') + (item.sendBy == 'right' ? 'bubble-right' : 'bubble-left');
-        },
-
-        displayFromAndAt: function (item) {
-            return item.sendAt + ', ' + item.sendFrom;
         },
 
         _sendPicture: function () {
@@ -248,37 +219,26 @@
         },
 
         ready: function () {
-            var self = this;
             setTimeout(function () {
                 var imgs = document.querySelectorAll('.img-unique');
                 for (var i = 0; i < imgs.length; i++) {
-                    self.modify(imgs[i]);
+                    imgs[i].style.background = 'url(' + (''+imgs[i].className).split(' ')[2] + ')';
                 }
             });
 
-        },
-
-        modify: function (image) {
-            image.style.background = 'url(' + (''+image.className).split(' ')[2] + ')';
         }
 
-
     });
-    currentPicture = 0;
-   function  changeMainPicture(urli){
-        //Change the img src attribute inside the messages div
-       document.getElementById("messages").children[0].setAttribute("src",urli.style.background.split('(')[1].split(')')[0]);
-       encadrerImageSlider(urli.id);
 
-       self.set('tapCounter', false);
-       $('#messages').iviewer('loadImage',  urli.style.background.split('(')[1].split(')')[0]);
-        //Change the img src attribute inside the messages div
-       //document.getElementById("messages").children[0].setAttribute("src",urli.style.background.split('(')[1].split(')')[0]);
+    /** OUT OF POLYMER :'( #roumainAttitude **/
+    var currentPicture = 0;
+    function changeMainPicture(urli){
+        encadrerImageSlider(urli.id);
+        tapCounter = false;
+        $('#messages').iviewer('loadImage',  urli.style.background.split('(')[1].split(')')[0]);
+        $('#messages').iviewer('fit');
     }
 
-    function changeMainPictureWithDirectURL(directURL){
-        $('#messages').iviewer({src: directURL, ui_disabled: true});
-    }
     function updateWidthSlider(){
         var newHeight =window.getComputedStyle(document.querySelector(".imageContainer"), null).getPropertyValue("width");
         var imgs = document.querySelectorAll(".imageContainer");
@@ -288,6 +248,7 @@
             } catch (e) {}
         }
     }
+
     function encadrerImageSlider(number){
         nettoyerCadre(currentPicture);
         document.querySelectorAll(".imageContainer")[number].style.border = "2px solid red";
@@ -297,4 +258,5 @@
         document.querySelectorAll(".imageContainer")[picture].style.border = "none";
 
     }
+    var tapCounter = false;
 </script>

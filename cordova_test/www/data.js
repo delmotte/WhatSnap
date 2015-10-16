@@ -9,7 +9,7 @@ var talks = [{
         sendBy: 'right',
         sendAt: 'coucou',
         sendFrom: 'laule',
-        image_url: 'http://soocurious.com/fr/wp-content/uploads/2014/03/des-ours-aux-comportements-humains1.jpg'
+        image_url: 'img/ourson1.jpg'
     },{
         sendBy: 'right',
         sendAt: 'coucou',
@@ -19,7 +19,7 @@ var talks = [{
         sendBy: 'left',
         sendAt: 'coucou',
         sendFrom: 'laule',
-        image_url: 'http://soocurious.com/fr/wp-content/uploads/2014/03/des-ours-aux-comportements-humains1.jpg'
+        image_url: 'img/ours.jpeg'
     },{
         sendBy: 'left',
         sendAt: 'coucou',
@@ -34,6 +34,56 @@ var talks = [{
         sendBy: 'left',
         sendAt: 'coucou',
         sendFrom: 'laule',
+        image_url: 'img/ours-brun.jpg'
+    },{
+        sendBy: 'left',
+        sendAt: 'coucou',
+        sendFrom: 'laule',
+        image_url: 'img/ours-humour-de-ouf.jpg'
+    },{
+        sendBy: 'left',
+        sendAt: 'coucou',
+        sendFrom: 'laule',
+        image_url: 'img/ours-salut.jpg'
+    },{
+        sendBy: 'left',
+        sendAt: 'coucou',
+        sendFrom: 'laule',
+        image_url: 'img/ours-salut1.jpg'
+    },{
+        sendBy: 'left',
+        sendAt: 'coucou',
+        sendFrom: 'laule',
+        image_url: 'http://soocurious.com/fr/wp-content/uploads/2014/03/des-ours-aux-comportements-humains1.jpg'
+    },{
+        sendBy: 'left',
+        sendAt: 'coucou',
+        sendFrom: 'laule',
+        image_url: 'img/ourson_ourson.jpg'
+    },{
+        sendBy: 'left',
+        sendAt: 'coucou',
+        sendFrom: 'laule',
+        image_url: 'http://soocurious.com/fr/wp-content/uploads/2014/03/des-ours-aux-comportements-humains1.jpg'
+    },{
+        sendBy: 'left',
+        sendAt: 'coucou',
+        sendFrom: 'laule',
+        image_url: 'img/ourson1.jpg'
+    },{
+        sendBy: 'left',
+        sendAt: 'coucou',
+        sendFrom: 'laule',
+        image_url: 'http://soocurious.com/fr/wp-content/uploads/2014/03/des-ours-aux-comportements-humains1.jpg'
+    },{
+        sendBy: 'left',
+        sendAt: 'coucou',
+        sendFrom: 'laule',
+        image_url: 'img/ourson1.jpg'
+    },{
+        sendBy: 'left',
+        sendAt: 'coucou',
+        sendFrom: 'laule',
         image_url: 'http://soocurious.com/fr/wp-content/uploads/2014/03/des-ours-aux-comportements-humains1.jpg'
     },{
         sendBy: 'left',
@@ -69,57 +119,7 @@ var talks = [{
         sendBy: 'left',
         sendAt: 'coucou',
         sendFrom: 'laule',
-        image_url: 'img/ourson.jpg'
-    },{
-        sendBy: 'left',
-        sendAt: 'coucou',
-        sendFrom: 'laule',
-        image_url: 'http://soocurious.com/fr/wp-content/uploads/2014/03/des-ours-aux-comportements-humains1.jpg'
-    },{
-        sendBy: 'left',
-        sendAt: 'coucou',
-        sendFrom: 'laule',
-        image_url: 'img/ourson.jpg'
-    },{
-        sendBy: 'left',
-        sendAt: 'coucou',
-        sendFrom: 'laule',
-        image_url: 'http://soocurious.com/fr/wp-content/uploads/2014/03/des-ours-aux-comportements-humains1.jpg'
-    },{
-        sendBy: 'left',
-        sendAt: 'coucou',
-        sendFrom: 'laule',
-        image_url: 'img/ourson.jpg'
-    },{
-        sendBy: 'left',
-        sendAt: 'coucou',
-        sendFrom: 'laule',
-        image_url: 'http://soocurious.com/fr/wp-content/uploads/2014/03/des-ours-aux-comportements-humains1.jpg'
-    },{
-        sendBy: 'left',
-        sendAt: 'coucou',
-        sendFrom: 'laule',
-        image_url: 'img/ourson.jpg'
-    },{
-        sendBy: 'left',
-        sendAt: 'coucou',
-        sendFrom: 'laule',
-        image_url: 'http://soocurious.com/fr/wp-content/uploads/2014/03/des-ours-aux-comportements-humains1.jpg'
-    },{
-        sendBy: 'left',
-        sendAt: 'coucou',
-        sendFrom: 'laule',
-        image_url: 'img/ourson.jpg'
-    },{
-        sendBy: 'left',
-        sendAt: 'coucou',
-        sendFrom: 'laule',
-        image_url: 'http://soocurious.com/fr/wp-content/uploads/2014/03/des-ours-aux-comportements-humains1.jpg'
-    },{
-        sendBy: 'left',
-        sendAt: 'coucou',
-        sendFrom: 'laule',
-        image_url: 'img/ourson.jpg'
+        image_url: 'img/ourson1.jpg'
     },{
         sendBy: 'left',
         sendAt: 'coucou',
