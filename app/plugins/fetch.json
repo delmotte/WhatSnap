@@ -1,0 +1,35 @@
+{
+    "com.pbakondy.sim": {
+        "source": {
+            "type": "registry",
+            "id": "com.pbakondy.sim"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "com.dbaq.cordova.contactsPhoneNumbers": {
+        "source": {
+            "type": "git",
+            "url": "https://github.com/dbaq/cordova-plugin-contacts-phone-numbers.git",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-whitelist": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-whitelist"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-device-motion": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-device-motion"
+        },
+        "is_top_level": true,
+        "variables": {}
+    }
+}

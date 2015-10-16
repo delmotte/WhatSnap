@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <title>WhatSnap</title>
+
+    <script src="./lib/hammer.js"></script>
+    <script src="./lib/jquery.js"></script>
+    <script src="./lib/jquery-ui.min.js"></script>
+    <script src="./bower_components/iviewer/jquery.iviewer.js"></script>
+    <link rel="stylesheet" href="./bower_components/iviewer/jquery.iviewer.css"/>
+    <link rel="stylesheet" href="./lib/jquery-ui.min.css"/>
+
+    <script src="data.js"></script>
+    <script src="./bower_components/webcomponentsjs/webcomponents.min.js"></script>
+    <link rel="import" href="./bower_components/app-router/app-router.html"/>
+    <style>
+        body {
+            background-image: url(http://fonds.toutimages.com/fo_beige/beige159.jpg);
+        }
+    </style>
+</head>
+<body style="margin:0px;">
+
+    <app-router>
+        <app-route path="/" import="./components/my-home.html"></app-route>
+        <app-route path="/home" redirect="/"></app-route>
+        <app-route path="/profile" import="./components/my-profile.html"></app-route>
+        <app-route path="/conversation/:conversationId" import="./components/my-conversation.html"></app-route>
+        <app-route path="*" redirect="/"></app-route>
+    </app-router>
+
+    <!-- 404 in web browser -->
+    <script type="text/javascript" src="cordova.js"></script>
+
+</body>
+</html>
