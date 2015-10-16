@@ -1,33 +1,37 @@
-# WhatSnap
-
-An app where you can chat with your phone contact by sending them images
-
-# Technologies
-
-Front-End : Polymer + Cordova app Showcase
-Back-End : NodeJS, MongoDB, Socket.io
-
-## commands to build the cordova project
-
-cordova platform add android
-cordova plugin add cordova-plugin-whitelist
-cordova plugin add cordova-plugin-device-motion
-
-## commands to run the server
-
-you first need to start mongodb using : mongod
-
-cd back-end
-node index.js
-
-
-
 ### Comment avez vous réalisé l’exemple ?
 
+  Nous avons combiné Polymer et Cordova afin de réaliser cet exemple. Polymer nous a servis pour réaliser les
+  templates et les vues webs, alors que Cordova nous a permis d'exporter ce code web sur une plateforme mobile 
+  et de bénéficier de certaines capacités natives de l'appareil.
+
+
 ### Avec quel outil de développement, de tests ?
-Nous avons utilisé Webstorm 10
+
+  Nous avons utilisé Webstorm 10 pour le développement
+  Nous avons testé sur Google Chrome, un Wiko Highway (Android 4.4), un Sony M2 (Android 5.1).
+  Nous avons également testé (grâce à la console Google) sur la plupart des résolutions / orientations d'écran.
+  Nous n'avons pas testé sur d'autres navigateurs car la compatibilité avec Polymer est compromise.
 
 ### Comment déploie-t-on et exécute-t-on l'exemple ?
+
+  git clone https://github.com/delmotte/WhatSnap.git
+  
+  cd WhatSnap/app/
+  
+  cordova platform add android
+  
+  cordova plugin add cordova-plugin-whitelist
+  
+  cordova plugin add cordova-plugin-device-motion
+  
+  cd www/
+  
+  bower install
+  
+  cd ..
+  
+  cordova run android
+  
 
 ### Comment teste-t-on les capacités d’adaptations ?
 
