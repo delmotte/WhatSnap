@@ -17,11 +17,15 @@
   git clone
   
   cd app
+  
   cordova platform add android
+  
   cordova plugin add cordova-plugin-whitelist
+  
   cordova plugin add cordova-plugin-device-motion
   
   cd app/web
+  
   bower install
   
 
