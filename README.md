@@ -14,7 +14,7 @@
 
 ### Comment déploie-t-on et exécute-t-on l'exemple ?
 
-  git clone
+  git clone https://github.com/delmotte/WhatSnap.git
   
   cd WhatSnap/app/
   
