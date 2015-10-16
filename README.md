@@ -16,7 +16,7 @@
 
   git clone
   
-  cd app
+  cd WhatSnap/app/
   
   cordova platform add android
   
@@ -24,7 +24,7 @@
   
   cordova plugin add cordova-plugin-device-motion
   
-  cd app/web
+  cd www/
   
   bower install
   
