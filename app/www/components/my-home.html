@@ -5,8 +5,6 @@
 <link rel="import" href="../bower_components/paper-item/paper-item-body.html"/>
 <link rel="import" href="../bower_components/paper-item/paper-item.html"/>
 <link rel="import" href="../bower_components/paper-badge/paper-badge.html"/>
-<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html"/>
-<link rel="import" href="side-thumbnail.html">
 <link rel="import" href="../bower_components/paper-ripple/paper-ripple.html"/>
 
 <dom-module id="my-home">
@@ -31,21 +29,9 @@
                 border-bottom:1px lightgrey solid;
             }
         }
-        @media (min-width: 600px) and (max-width: 800px) {
-            .grid-item {
-                width: calc(50% - 52px);
-            }
-        }
-        @media (min-width: 800px) and (max-width: 1000px) {
-            .grid-item {
-                width: calc(33% - 52px);
-            }
-        }
-        @media (min-width:1000px) {
-            .grid-item {
-                width: calc(25% - 52px);
-            }
-        }
+        @media (min-width: 600px) and (max-width: 800px) { .grid-item { width: calc(50% - 52px); } }
+        @media (min-width: 800px) and (max-width: 1000px) { .grid-item { width: calc(33% - 52px); }}
+        @media (min-width:1000px) { .grid-item { width: calc(25% - 52px); }}
         @media (min-width: 600px) {
             .grid-item {
                 margin:10px;
@@ -56,16 +42,11 @@
                 filter:progid:DXImageTransform.Microsoft.Shadow(color=#656565, Direction=180, Strength=10);
             }
         }
-        .talks-container {
-            -webkit-perspective: 500px;
-        }
-        .talks-container paper-item {
-            -webkit-animation-fill-mode: forwards;
-        }
+        .talks-container { -webkit-perspective: 500px; }
+        .talks-container paper-item { -webkit-animation-fill-mode: forwards; }
     </style>
 
     <template>
-
 
         <!-- menu bar -->
         <paper-toolbar>
@@ -89,13 +70,10 @@
                     </paper-item-body>
                     <div><paper-badge label="{{ item.notif }}"></paper-badge></div>
                     <paper-ripple fit id="ripple" style="pointer-events: none;"></paper-ripple>
-
                 </paper-item>
 
             </template>
         </div>
-
-
 
     </template>
 
@@ -105,16 +83,11 @@
     Polymer({
         is: 'my-home',
 
-        /**
-         * Data initialization
-         */
-
         properties: {
             conversations: {
                 type: Array,
                 value: talks
-            },
-
+            }
         },
 
         attached: function () {
@@ -133,6 +106,13 @@
             }
         },
 
+        _rotateY: function (deg) {
+            var paperItems = document.querySelectorAll('.talks-container paper-item');
+            for (var i in paperItems) {
+                paperItems[i].style['-webkit-transform'] = 'rotate3d(0, 1, 0, ' + (deg*4) + 'deg)';
+            }
+        },
+
         detached: function () {
             if (navigator.accelerometer) navigator.accelerometer.clearWatch();
         },
@@ -141,19 +121,8 @@
             document.querySelector('app-router').go('/conversation/' + item.model.item.id);
         },
 
-        downAction: function(e) {
-            this.$.ripple.downAction({x: e.x, y: e.y});
-        },
-        upAction: function() {
-            this.$.ripple.upAction();
-        },
-
-        _rotateY: function (deg) {
-            var paperItems = document.querySelectorAll('.talks-container paper-item');
-            for (var i in paperItems) {
-                paperItems[i].style['-webkit-transform'] = 'rotate3d(0, 1, 0, ' + (deg*4) + 'deg)';
-            }
-        }
+        downAction: function(e) { this.$.ripple.downAction({x: e.x, y: e.y}); },
+        upAction: function() { this.$.ripple.upAction(); }
 
     });
 </script>

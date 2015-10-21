@@ -3,19 +3,11 @@
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html"/>
 <link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html"/>
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html"/>
-<link rel="import" href="side-thumbnail.html"/>
 
 <dom-module id="my-conversation" attributes="conversationId">
     <style>
-
         @media (max-width: 639px) {
-            side-thumbnail{
-                top: 56px !important;
-            }
-            .image-container {
-                padding-top: 56px!important;
-            }
-
+            .side-thumbnail{  top: 56px !important;  }
         }
 
         paper-toolbar {
@@ -37,9 +29,10 @@
         .add-photo paper-fab {
             top:-12px;
             right:12px;
+            float:right;
         }
 
-        side-thumbnail{
+        .side-thumbnail{
             position: fixed;
             left: 0;
             top: 64px;
@@ -66,9 +59,7 @@
         }
 
         @media (max-width: 639px) {
-            .image-container {
-                top:56px!important;
-            }
+            .image-container {  top:56px!important;  }
         }
         .image-container {
             top: 64px;
@@ -80,36 +71,7 @@
             background-color: black;
         }
 
-        .image-container > img {
-            position: absolute;
-            max-width: 100%;
-            top: 10%;
-            left: 10%;
-            border-radius: 3px;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.9);
-        }
-
-        .image-container img:empty {
-            top: 50%;
-            left: 50%;
-            -webkit-transform: translate(-50%, -50%);
-            -moz-transform: translate(-50%, -50%);
-            -ms-transform: translate(-50%, -50%);
-            -o-transform: translate(-50%, -50%);
-            transform: translate(-50%, -50%);
-        }
-        side-thumbnail::-webkit-scrollbar {
-            display: none;
-        }
-
-        @media screen and (orientation: portrait) {
-            .image-container > img:empty { max-width: 100%; }
-        }
-
-        @media screen and (orientation: landscape) {
-            .image-container > img:empty { max-height: 100%; }
-        }
-
+        .side-thumbnail::-webkit-scrollbar {  display: none;  }
     </style>
 
     <template>
@@ -120,17 +82,19 @@
             <div class="title">{{ userName }}</div>
         </paper-toolbar>
 
-        <side-thumbnail>
-
-            <!-- Display all messages -->
+        <!-- Side bar -->
+        <div class="content side-thumbnail" style="padding-bottom: 67px">
             <template is="dom-repeat" items="{{ messages }}" >
-                <div class="imageContainer"  >
-                    <div id="{{ index }}" class$="{{buildClass(item.image_url)}}" onmousedown="changeMainPicture(this)" ontouchstart="changeMainPicture(this)"  >
+                <div class="imageContainer" >
+                    <div id="{{ index }}"
+                         class$="{{buildClass(item.image_url)}}"
+                         onmousedown="changeMainPicture(this)"
+                         ontouchstart="changeMainPicture(this)">
+                        <!-- Houston, we do not have a problem anymore  ... -->
                     </div>
                 </div>
             </template>
-        </side-thumbnail>
-
+        </div>
 
         <!-- image container -->
         <div class="image-container" id="messages"></div>
@@ -141,7 +105,7 @@
             <paper-fab id="upload_btn" icon="camera-enhance" on-click="_sendPicture"></paper-fab>
         </div>
 
-    </template>
+    </template>r
 
 </dom-module>
 
@@ -157,16 +121,14 @@
             userName: {
                 type:String,
                 value: 'Contact Name'
+            },
+            tapState: {
+                type: Boolean,
+                value: false
             }
         },
 
-        goBack: function () {
-            document.querySelector('app-router').go('/home');
-        },
-
         attached: function () {
-
-            // find the right conversation
             for (var i in talks) {
                 if (talks[i].id == this.conversationId) {
                     this.set('userName', talks[i].name);
@@ -175,47 +137,39 @@
                 }
             }
 
-            // add listener to resize the left side bar
-            window.addEventListener("resize", updateWidthSlider, true);
-
             var self = this;
-            setTimeout(function(){
-
-                if(self.messages.length >0){
-                    // init image center
+            setTimeout(function () {
+                if(self.messages.length > 0) {
                     $('#messages').iviewer({src: self.messages[0].image_url, ui_disabled: true});
+                    encadrerImageSlider(0);
 
-                    // listen double tap to zoom in / zoom out
-                    (new Hammer(document.querySelector('#messages'), {transform_always_block: true, taps:2})).on('doubletap', function () {
-                        if (tapCounter == false) {
+                    var hammer = new Hammer(
+                            document.querySelector('#messages'),
+                            {transform_always_block: true, taps:2}
+                    );
+                    hammer.on('doubletap', function () {
+                        if (self.tapState == false) {
                             $('#messages').iviewer('zoom_by', 1.5);
-                            tapCounter = true;
+                            self.set('tapState', true);
                         } else {
                             $('#messages').iviewer('fit');
-                            tapCounter = false;
+                            self.set('tapState', false);
                         }
                     });
 
-                    //encadrer en rouge la premiere image du side slider
-                    encadrerImageSlider(0);
                 }
-                updateWidthSlider();
+                self._updateWidthSlider();
             }, 100);
-
         },
 
-
-
-        detached: function () {
-            window.removeEventListener("resize", updateWidthSlider, true);
-        },
-
-        _sendPicture: function () {
-            document.querySelector('#upload_input').dispatchEvent(new Event('click'));
-        },
-
-        buildClass: function (image_url) {
-            return 'img_container img-unique ' + image_url ;
+        _updateWidthSlider: function () {
+            var newHeight =window.getComputedStyle(document.querySelector(".imageContainer"), null).getPropertyValue("width");
+            var imgs = document.querySelectorAll(".imageContainer");
+            for (var i in imgs) {
+                try {
+                    imgs[i].style.height = newHeight;
+                } catch (e) {}
+            }
         },
 
         ready: function () {
@@ -226,37 +180,27 @@
                 }
             });
 
-        }
+        },
+
+        buildClass: function (image_url) {
+            return 'img_container img-unique ' + image_url ;
+        },
+
+        goBack: function () { document.querySelector('app-router').go('/home'); }
 
     });
 
-    /** OUT OF POLYMER :'( #roumainAttitude **/
-    var currentPicture = 0;
     function changeMainPicture(urli){
         encadrerImageSlider(urli.id);
-        tapCounter = false;
         $('#messages').iviewer('loadImage',  urli.style.background.split('(')[1].split(')')[0]);
         $('#messages').iviewer('fit');
     }
 
-    function updateWidthSlider(){
-        var newHeight =window.getComputedStyle(document.querySelector(".imageContainer"), null).getPropertyValue("width");
-        var imgs = document.querySelectorAll(".imageContainer");
-        for (var i in imgs) {
-            try {
-                imgs[i].style.height = newHeight;
-            } catch (e) {}
-        }
-    }
-
+    var currentPicture = 0;
     function encadrerImageSlider(number){
-        nettoyerCadre(currentPicture);
+        document.querySelectorAll(".imageContainer")[currentPicture].style.border = "none";
         document.querySelectorAll(".imageContainer")[number].style.border = "2px solid red";
         currentPicture = number;
     }
-    function nettoyerCadre(picture){
-        document.querySelectorAll(".imageContainer")[picture].style.border = "none";
 
-    }
-    var tapCounter = false;
 </script>
